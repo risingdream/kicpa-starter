@@ -10,18 +10,22 @@
 
 ## 일하는 단위
 
-- 한 번에 GitHub 이슈 하나만 한다. 사용자가 이슈 번호를 주지 않으면 먼저 묻는다.
-- 이슈는 `gh issue view <번호>`로 읽고, 완료 조건과 "하지 말 것"을 지킨다.
-- 이슈를 새로 만들 때는 `.github/ISSUE_TEMPLATE/`의 서식(스토리 `story.md`, 작업 `task.md`)대로 본문을 쓰고 `gh issue create --title "..." --body-file <파일>`로 올린다. 올리기 전에 제목과 본문을 사용자에게 보여 주고 확인을 받는다.
-- 끝나면 `gh issue comment <번호>`로 결과를 남긴다: 변경한 파일, 실행한 테스트와 결과, 남은 위험. 이슈는 사용자가 확인한 뒤에만 닫는다.
+할 일은 저장소 안 `backlog/`에 작업 카드(마크다운 파일)로 있다. 도구는 Backlog.md이고 명령은 `npx backlog …`로 실행한다(이 저장소에 버전을 고정해 설치했다. 아래 Backlog.md 블록의 `backlog` 명령도 앞에 `npx`를 붙인다).
+
+- 한 번에 작업 하나만 한다. 사용자가 작업 번호(예: `TASK-1.1`)를 주지 않으면 먼저 묻는다.
+- 작업은 `npx backlog task view <번호> --plain`으로 읽고, 인수 조건(Acceptance Criteria)과 설명의 "하지 말 것"을 지킨다.
+- **계획을 먼저 쓰고 승인을 기다린다.** 상태를 `진행 중`으로 바꾸고 `--plan`으로 구현 계획을 적은 뒤, 계획을 사용자에게 보여 주고 "진행해"를 들을 때까지 코드를 고치지 않는다. 이 저장소는 모든 작업에 계획 검토가 필요하다.
+- 작업을 새로 만들거나 나눌 때는 `npx backlog task create`로 만든다. 스토리는 제목 앞에 `[스토리]`, 라벨 `스토리`, 설명에 "나는 ___로서 ___를 원한다. 끝나면 ___로 확인한다."와 "하지 말 것"을 쓴다. 작업은 `-p <스토리 번호>`로 스토리 아래에 두고, 제목은 동사로 끝나는 한 줄, 인수 조건은 `--ac`로 1~3개 쓴다. 만들기 전에 제목과 인수 조건을 사용자에게 보여 주고 확인을 받는다.
+- 끝나면 확인한 인수 조건만 `--check-ac`로 체크하고, `--final-summary`에 변경한 파일, 실행한 테스트와 결과, 남은 위험을 적는다. 완료 기준(Definition of Done)의 "사람이 검토했다"는 체크하지 않는다. 상태를 `완료`로 옮기는 일은 사용자가 확인한 뒤에만 한다.
+- `backlog/` 안의 파일을 직접 고치지 않는다. 항상 `npx backlog` 명령으로 고친다.
 
 ## 바꾸는 방법
 
 - 작게 바꾸고 바로 확인한다. 바꾼 뒤에는 `npm test`를 돌리고 결과를 그대로 보고한다.
 - 테스트가 실패하면 테스트나 기대값을 고쳐서 통과시키지 않는다. 기대값이 틀렸다고 보이면 사용자에게 먼저 묻는다.
 - 새 기능에는 정상·경계·예외 사례 테스트를 함께 만든다. 테스트는 `test/`에 두고 Node 내장 `node:test`를 쓴다.
-- 이슈 범위 밖의 파일은 고치지 않는다. 필요해 보이면 제안만 한다.
-- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler` 하나다.
+- 작업 범위 밖의 파일은 고치지 않는다. 필요해 보이면 제안만 한다.
+- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler`(배포)와 `backlog.md`(작업 관리) 둘이다.
 
 ## 자료와 비밀값
 
@@ -43,6 +47,8 @@
 | 처음 준비 | `npm install` |
 | 테스트 | `npm test` |
 | 내 노트북에서 화면 띄우기 | `npm run dev` → <http://localhost:8787> |
+| 작업 보드(웹) 띄우기 | `npm run board` → <http://localhost:6420> |
+| 작업 목록 보기 | `npx backlog task list --plain` |
 | 배포 (승인 뒤) | `npm run deploy` |
 
 ## 구조
@@ -51,3 +57,28 @@
 - `src/index.js` — `public/`에 없는 주소(`/api/...`)를 받는다.
 - `src/vat.js` — 계산 예시. 계산은 화면이 아니라 `src/`에 두고 테스트한다.
 - `docs/` — 첫 개발 한 장, 와이어프레임, QA·배포 점검표 서식.
+- `backlog/` — 작업 카드(스토리·작업)와 설정(`config.yml`). Backlog.md가 관리한다.
+
+<!-- BACKLOG.MD GUIDELINES START -->
+<!-- backlog.md-instructions-version: 1.54.0 -->
+<CRITICAL_INSTRUCTION>
+
+## Backlog.md Workflow
+
+This project uses Backlog.md for task and project management.
+
+**At the beginning of each conversation in this project, run `backlog instructions overview` before answering or taking action. Re-read it only if you have not read it yet in the current conversation.**
+
+Use the overview to decide whether to search, read, create, or update Backlog tasks.
+
+Before task lifecycle actions, read the matching detailed guide:
+- `backlog instructions task-creation` before creating or splitting tasks
+- `backlog instructions task-execution` before planning, changing status or assignee, adding a plan or implementation notes, or implementing task work
+- `backlog instructions task-finalization` before checking acceptance criteria, writing final summaries, or moving tasks to terminal statuses
+
+Use `backlog <command> --help` before running unfamiliar commands. Help shows options, fields, and examples.
+
+Do not edit Backlog task, draft, document, decision, or milestone markdown files directly. Use the `backlog` CLI so metadata, relationships, and history stay consistent.
+
+</CRITICAL_INSTRUCTION>
+<!-- BACKLOG.MD GUIDELINES END -->
