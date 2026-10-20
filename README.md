@@ -16,7 +16,7 @@
 |---|---|---|
 | GitHub 계정 | github.com에 로그인된다 | github.com에서 가입(무료) |
 | Git | 터미널에서 `git --version` | [git-scm.com](https://git-scm.com)에서 설치 |
-| Node.js (LTS 판) | 터미널에서 `node -v` → `v20` 이상 | [nodejs.org](https://nodejs.org)에서 LTS 설치 |
+| Node.js (LTS 버전) | 터미널에서 `node -v` → `v20` 이상 | [nodejs.org](https://nodejs.org)에서 LTS 설치 |
 | GitHub CLI(`gh`) | 터미널에서 `gh --version` | [cli.github.com](https://cli.github.com)에서 설치 |
 | Claude Code 또는 Codex | 터미널에서 `claude` 또는 `codex` | 과정 사전 과제 안내를 따른다 |
 
@@ -70,7 +70,7 @@ agent에게 시켜도 되고 직접 쳐도 됩니다.
 
 ```bash
 npm install     # 처음 한 번. 필요한 도구를 내려받는다
-npm test        # 시험(계산이 맞는지 자동 확인)을 돌린다
+npm test        # 테스트(계산이 맞는지 자동으로 확인)를 돌린다
 npm run dev     # 내 노트북에서 화면을 띄운다
 ```
 
@@ -87,7 +87,7 @@ npm run dev     # 내 노트북에서 화면을 띄운다
 
 일을 맡길 때는 이슈 번호 하나만 말합니다.
 
-> 이슈 #3만 진행해 줘. 끝나면 변경한 파일, 실행한 시험과 결과, 남은 위험을 이슈에 댓글로 남겨 줘. commit은 내가 확인한 뒤에 해.
+> 이슈 #3만 진행해 줘. 끝나면 변경한 파일, 실행한 테스트와 결과, 남은 위험을 이슈에 댓글로 남겨 줘. commit은 내가 확인한 뒤에 해.
 
 ## 5. 실제 주소로 배포하기
 
@@ -107,7 +107,7 @@ npm run deploy       # Cloudflare에 올린다
 | `public/index.html` | 화면 한 장 |
 | `src/index.js` | 주소를 받아 알맞은 계산으로 넘긴다 |
 | `src/vat.js` | 부가세 계산 (예시) |
-| `test/vat.test.js` | 계산 시험: 정상·경계·예외 사례 |
+| `test/vat.test.js` | 계산 테스트: 정상·경계·예외 사례 |
 | `wrangler.toml` | Cloudflare 배포 설정 |
 | `AGENTS.md`, `CLAUDE.md` | agent 작업 규칙 |
 | `docs/first-dev-one-pager.md` | 첫 개발 한 장 서식 |
@@ -119,4 +119,4 @@ npm run deploy       # Cloudflare에 올린다
 
 - 실제 고객명, 사업자번호, 주민등록번호, 계좌는 넣지 않습니다. 가상 자료만 씁니다.
 - 토큰과 비밀번호는 `.env` 또는 `.dev.vars` 파일에만 둡니다. 이 두 파일은 저장소에 올라가지 않게 막아 두었습니다.
-- agent의 "다 됐습니다"를 그대로 믿지 않습니다. 시험 결과와 바뀐 내용(`git diff`)을 직접 봅니다.
+- agent의 "다 됐습니다"를 그대로 믿지 않습니다. 테스트 결과와 바뀐 내용(`git diff`)을 직접 봅니다.
