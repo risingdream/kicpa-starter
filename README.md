@@ -8,7 +8,9 @@
 - **작은 API 하나** — 화면이 계산을 맡기는 주소 `/api/vat`(`src/`). API는 화면이 서버에 일을 시키는 창구입니다
 - **Cloudflare 배포 설정** — 이 저장소를 인터넷 주소로 여는 설정(`wrangler.toml`). 배포는 내 컴퓨터에서 만든 것을 다른 사람도 열 수 있는 곳에 올리는 일입니다
 
-실습에서는 이 예시를 내 업무 도구로 바꿔 갑니다. 코드는 agent(Claude Code 또는 Codex)가 쓰고, 나는 무엇을 만들지 정하고 결과를 확인합니다.
+3일차 실습 E에서 쓰는 **Docker 스택**은 `stack/` 폴더에 따로 있습니다. Python API·React 화면·PostgreSQL DB를 내 노트북에 띄우고 Cloudflare 터널로 여는 예시입니다. 설명은 [`stack/README.md`](stack/README.md)를 봅니다.
+
+실습에서는 이 예시를 내 업무 도구로 바꿔 갑니다. 코드는 agent(Claude Code·Codex·OpenCode)가 쓰고, 나는 무엇을 만들지 정하고 결과를 확인합니다.
 
 ## 0. 미리 있어야 하는 것
 
@@ -18,7 +20,8 @@
 | Git | 터미널에서 `git --version` | [git-scm.com](https://git-scm.com)에서 설치 |
 | Node.js (LTS 버전) | 터미널에서 `node -v` → `v20` 이상 | [nodejs.org](https://nodejs.org)에서 LTS 설치 |
 | GitHub CLI(`gh`) | 터미널에서 `gh --version` | [cli.github.com](https://cli.github.com)에서 설치 |
-| Claude Code 또는 Codex | 터미널에서 `claude` 또는 `codex` | 과정 사전 과제 안내를 따른다 |
+| coding agent 1개 (Claude Code·Codex·OpenCode) | 터미널에서 `claude`·`codex`·`opencode` | 과정 사전 과제 안내를 따른다 |
+| Docker Desktop | 터미널에서 `docker compose version` | [docker.com](https://www.docker.com/products/docker-desktop/)에서 설치. 3일차 실습 E에서 쓴다 |
 
 터미널은 명령을 글자로 치는 창입니다. macOS는 "터미널", 윈도는 "PowerShell"을 엽니다. 설치한 뒤에는 터미널을 새로 열어야 명령이 잡힙니다.
 

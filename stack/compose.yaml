@@ -1,0 +1,57 @@
+# 한공회 3일차 실습 E: Python API + React 화면 + PostgreSQL DB를 내 노트북에 한꺼번에 띄운다.
+# 띄우기: docker compose up -d --build   →   http://localhost:5173
+# 인터넷에 열기: docker compose --profile tunnel up -d tunnel   (주소는 docker compose logs tunnel)
+# 끄기: docker compose down   (DB 자료는 남는다. down -v는 자료까지 지운다)
+#
+# 이미지 버전은 사전 과제에서 미리 받은 것과 같아야 한다. 바꾸지 않는다.
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: practice
+      POSTGRES_USER: practice
+      # 로컬 연습용 값. DB는 노트북 바깥에 열지 않으므로(ports 없음) 다른 기기에서 쓸 수 없다.
+      # 실제 서비스의 비밀번호는 이렇게 파일에 적지 않는다.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local-practice-only}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U practice -d practice"]
+      interval: 3s
+      retries: 20
+
+  api:
+    build: ./api
+    environment:
+      DATABASE_URL: postgresql://practice:${POSTGRES_PASSWORD:-local-practice-only}@db:5432/practice
+      WATCHFILES_FORCE_POLLING: "true" # 윈도에서도 코드를 고치면 바로 다시 읽게 한다
+      PYTHONDONTWRITEBYTECODE: "1" # 저장소에 __pycache__ 폴더를 만들지 않는다
+    volumes:
+      - ./api:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./web
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web/src:/app/src
+      - ./web/index.html:/app/index.html
+    depends_on:
+      - api
+
+  # Cloudflare Quick Tunnel: 계정 없이 임시 주소(https://….trycloudflare.com)를 붙인다.
+  # --profile tunnel을 줄 때만 뜬다. 누구나 열 수 있으니 가상 자료만 넣고, 다 보면 끈다.
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --url http://web:5173
+    depends_on:
+      - web
+    profiles: ["tunnel"]
+
+volumes:
+  dbdata:

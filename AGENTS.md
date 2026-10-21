@@ -25,7 +25,7 @@
 - 테스트가 실패하면 테스트나 기대값을 고쳐서 통과시키지 않는다. 기대값이 틀렸다고 보이면 사용자에게 먼저 묻는다.
 - 새 기능에는 정상·경계·예외 사례 테스트를 함께 만든다. 테스트는 `test/`에 두고 Node 내장 `node:test`를 쓴다.
 - 작업 범위 밖의 파일은 고치지 않는다. 필요해 보이면 제안만 한다.
-- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler`(배포)와 `backlog.md`(작업 관리) 둘이다.
+- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler`(배포)와 `backlog.md`(작업 관리) 둘이다. `stack/`은 따로 `stack/api/requirements.txt`와 `stack/web/package.json`에 고정돼 있다.
 
 ## 자료와 비밀값
 
@@ -50,6 +50,7 @@
 | 작업 보드(웹) 띄우기 | `npm run board` → <http://localhost:6420> |
 | 작업 목록 보기 | `npx backlog task list --plain` |
 | 배포 (승인 뒤) | `npm run deploy` |
+| Docker 스택 띄우기 (실습 E) | `stack/` 폴더에서 `docker compose up -d --build` → <http://localhost:5173> |
 
 ## 구조
 
@@ -58,6 +59,7 @@
 - `src/vat.js` — 계산 예시. 계산은 화면이 아니라 `src/`에 두고 테스트한다.
 - `docs/` — 첫 개발 한 장, 와이어프레임, QA·배포 점검표 서식.
 - `backlog/` — 작업 카드(스토리·작업)와 설정(`config.yml`). Backlog.md가 관리한다.
+- `stack/` — 3일차 실습 E의 Docker 스택. Python API(`api/`), React 화면(`web/`), PostgreSQL(`db/`)을 `compose.yaml` 하나로 띄운다. 설명은 `stack/README.md`. 이미지 버전은 바꾸지 않는다. DB 구조를 바꾸면 이미 있는 DB에는 `init.sql`이 다시 돌지 않는다는 점을 사용자에게 알린다. 터널(`--profile tunnel`)은 사용자가 시킬 때만 띄운다.
 
 <!-- BACKLOG.MD GUIDELINES START -->
 <!-- backlog.md-instructions-version: 1.54.0 -->
