@@ -15,7 +15,7 @@ ordinal: 6000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-stack/db/init.sql의 receipts 표에 deductible(공제 여부, 기본값 참) 칸을 추가한다. 이미 만든 DB에 적용할 ALTER TABLE 한 줄도 stack/db/README 또는 카드 메모에 남긴다.
+stack/db/init.sql의 receipts 표에 deductible(공제 여부, 기본값 참) 칸을 추가한다. 이미 만든 DB에 적용할 ALTER TABLE 한 줄도 stack/db/README 또는 이슈 메모에 남긴다.
 
 하지 말 것: API·화면 수정, 기존 예시 자료 삭제
 <!-- SECTION:DESCRIPTION:END -->

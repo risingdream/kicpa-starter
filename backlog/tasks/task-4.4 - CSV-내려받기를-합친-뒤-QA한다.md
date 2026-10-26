@@ -18,7 +18,7 @@ ordinal: 19000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-백엔드(4.2)와 프론트(4.3)를 main에 합친 뒤, AGENTS.md의 'QA 카드' 절차대로 실행한다. 스토리 2·3의 QA도 다시 한 번 돌려 이번 변경이 앞 기능을 망가뜨리지 않았는지 본다(회귀 QA).
+백엔드(4.2)와 프론트(4.3)를 main에 합친 뒤, AGENTS.md의 'QA 이슈' 절차대로 실행한다. 스토리 2·3의 QA도 다시 한 번 돌려 이번 변경이 앞 기능을 망가뜨리지 않았는지 본다(회귀 QA).
 
 하지 말 것: QA 중에 코드를 직접 고치기
 <!-- SECTION:DESCRIPTION:END -->

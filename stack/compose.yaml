@@ -27,7 +27,7 @@ services:
     environment:
       DATABASE_URL: postgresql://practice:${POSTGRES_PASSWORD:-local-practice-only}@db:5432/practice
       WATCHFILES_FORCE_POLLING: "true" # 윈도에서도 코드를 고치면 바로 다시 읽게 한다
-      PYTHONDONTWRITEBYTECODE: "1" # 저장소에 __pycache__ 폴더를 만들지 않는다
+      PYTHONDONTWRITEBYTECODE: "1" # 저장소에 __pycache__를 만들지 않는다
     volumes:
       - ./api:/app
     depends_on:
@@ -37,7 +37,7 @@ services:
   web:
     build: ./web
     ports:
-      # 작업 폴더 둘에서 동시에 띄울 때는 WEB_PORT=5174처럼 바꾼다(docs/orca-demo.md).
+      # 워크트리 둘에서 동시에 띄울 때는 WEB_PORT=5174처럼 바꾼다(docs/orca-demo.md).
       - "${WEB_PORT:-5173}:5173"
     volumes:
       - ./web/src:/app/src

@@ -15,7 +15,7 @@ ordinal: 13000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-docs/wireframes/month.md의 배치대로 stack/web/src/App.jsx에 월 선택(input type=month)을 넣고, 고른 달을 ?month=로 붙여 목록을 다시 부른다. 백엔드 카드와 동시에 진행하므로 지금 API가 month를 무시해도 화면은 약속대로 만든다.
+docs/wireframes/month.md의 배치대로 stack/web/src/App.jsx에 월 선택(input type=month)을 넣고, 고른 달을 ?month=로 붙여 목록을 다시 부른다. 백엔드 이슈와 동시에 진행하므로 지금 API가 month를 무시해도 화면은 약속대로 만든다.
 
 하지 말 것: API(stack/api) 수정, 화면에서 날짜로 직접 거르기
 <!-- SECTION:DESCRIPTION:END -->
