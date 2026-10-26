@@ -40,7 +40,7 @@ export default function App() {
       <form onSubmit={submit}>
         <label>날짜<input type="date" required value={form.issued_on} onChange={(e) => setForm({ ...form, issued_on: e.target.value })} /></label>
         <label>거래처<input required maxLength={50} placeholder="가상 거래처" value={form.vendor} onChange={(e) => setForm({ ...form, vendor: e.target.value })} /></label>
-        <label>공급가액<input type="number" required min="0" step="1" value={form.supply} onChange={(e) => setForm({ ...form, supply: e.target.value })} /></label>
+        <label>공급가액<input type="number" required step="1" value={form.supply} onChange={(e) => setForm({ ...form, supply: e.target.value })} /></label>
         <button type="submit">추가</button>
       </form>
 
