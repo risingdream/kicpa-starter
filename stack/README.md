@@ -17,7 +17,7 @@ Python API, React 화면, PostgreSQL DB를 내 노트북에 **한꺼번에** 띄
 
 ## 명령
 
-모두 이 `stack/` 폴더에서 칩니다. 먼저 Docker Desktop을 켜 둡니다.
+모두 `stack/`에서 칩니다. 먼저 Docker Desktop을 켜 둡니다.
 
 | 할 일 | 명령 |
 |---|---|
