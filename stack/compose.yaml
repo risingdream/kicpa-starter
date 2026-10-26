@@ -37,7 +37,8 @@ services:
   web:
     build: ./web
     ports:
-      - "5173:5173"
+      # 작업 폴더 둘에서 동시에 띄울 때는 WEB_PORT=5174처럼 바꾼다(docs/orca-demo.md).
+      - "${WEB_PORT:-5173}:5173"
     volumes:
       - ./web/src:/app/src
       - ./web/index.html:/app/index.html

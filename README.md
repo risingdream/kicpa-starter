@@ -90,7 +90,7 @@ npx backlog task list --plain   # 작업 목록을 터미널에 보여 준다
 npm run board                   # 작업 보드를 브라우저로 연다 (멈출 때 Ctrl + C)
 ```
 
-작업 보드는 `할 일 / 진행 중 / 완료` 세 칸으로 된 화면(<http://localhost:6420>)입니다. 메뉴는 영어지만 카드와 칸 이름은 한국어입니다. 예시로 스토리 하나(`TASK-1`)와 그 아래 작업 둘(`TASK-1.1`, `TASK-1.2`)이 들어 있습니다.
+작업 보드는 `할 일 / 진행 중 / 완료` 세 칸으로 된 화면(<http://localhost:6420>)입니다. 메뉴는 영어지만 카드와 칸 이름은 한국어입니다. 예시로 스토리 넷이 들어 있습니다. `TASK-1`(부가세 계산기)은 실습에서 카드 모양을 보는 용도이고, `TASK-2`~`TASK-4`(매입 증빙 장부의 공제 표시·월 선택·CSV 내려받기)는 여러 agent를 나란히 돌리는 시연용입니다. 시연 순서는 [`docs/orca-demo.md`](docs/orca-demo.md)에 있습니다.
 
 작업 카드에는 두 가지 확인 목록이 붙습니다.
 
@@ -131,6 +131,7 @@ npm run deploy       # Cloudflare에 올린다
 | `docs/first-dev-one-pager.md` | 첫 개발 한 장 서식 |
 | `docs/wireframe.md` | 화면 기획(아스키 와이어프레임) 서식 |
 | `docs/qa-deploy-checklist.md` | QA·배포 점검표 |
+| `docs/orca-demo.md` | Orca로 카드 여러 장을 나란히 돌리는 시연 순서(선행·병렬·상호 의존 스토리, QA 반복) |
 | `backlog/` | 작업 카드(`tasks/`)와 작업 도구 설정(`config.yml`) |
 
 ## 지킬 것

@@ -2,7 +2,7 @@ project_name: "부가세 계산 도구"
 default_status: "할 일"
 statuses: ["할 일", "진행 중", "완료"]
 definition_of_done: ["화면에서 직접 확인했다", "개인정보·비밀값이 없다", "사람이 검토했다"]
-labels: ["스토리"]
+labels: ["스토리", "와이어프레임", "백엔드", "프론트", "QA", "버그"]
 date_format: yyyy-mm-dd
 max_column_width: 20
 auto_open_browser: true
