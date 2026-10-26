@@ -5,7 +5,7 @@ name = "kicpa-starter"
 main = "src/index.js"
 compatibility_date = "2026-10-01"
 
-# public 폴더의 화면 파일을 그대로 보여 준다.
+# public/의 화면 파일을 그대로 보여 준다.
 # 화면 파일에 없는 주소(/api/...)는 src/index.js가 받는다.
 [assets]
 directory = "./public"

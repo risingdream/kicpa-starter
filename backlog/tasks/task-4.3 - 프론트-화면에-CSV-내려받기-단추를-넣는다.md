@@ -17,7 +17,7 @@ ordinal: 18000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-docs/wireframes/csv.md의 위치에 'CSV 내려받기' 단추를 넣는다. 고른 달이 있을 때만 누를 수 있고, /api/receipts.csv?month=를 연다. 백엔드 카드와 동시에 진행한다.
+docs/wireframes/csv.md의 위치에 'CSV 내려받기' 단추를 넣는다. 고른 달이 있을 때만 누를 수 있고, /api/receipts.csv?month=를 연다. 백엔드 이슈와 동시에 진행한다.
 
 하지 말 것: API(stack/api) 수정, 화면에서 CSV를 직접 만들기
 <!-- SECTION:DESCRIPTION:END -->

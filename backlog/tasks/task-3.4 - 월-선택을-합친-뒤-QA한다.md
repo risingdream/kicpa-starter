@@ -16,7 +16,7 @@ ordinal: 14000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-백엔드(3.2)와 프론트(3.3)를 main에 합친 뒤, AGENTS.md의 'QA 카드' 절차대로 아래 인수 조건을 하나씩 실행한다. 실패한 줄마다 [버그] 카드를 만들고, 고친 뒤 처음부터 다시 돈다.
+백엔드(3.2)와 프론트(3.3)를 main에 합친 뒤, AGENTS.md의 'QA 이슈' 절차대로 아래 인수 조건을 하나씩 실행한다. 실패한 줄마다 [버그] 이슈를 만들고, 고친 뒤 처음부터 다시 돈다.
 
 하지 말 것: QA 중에 코드를 직접 고치기
 <!-- SECTION:DESCRIPTION:END -->

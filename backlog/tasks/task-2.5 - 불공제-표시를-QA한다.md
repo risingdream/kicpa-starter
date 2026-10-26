@@ -15,9 +15,9 @@ ordinal: 9000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-AGENTS.md의 'QA 카드' 절차대로 아래 인수 조건을 표처럼 하나씩 실행한다. 실패한 줄마다 [버그] 카드를 만들고, 고친 뒤 처음부터 다시 돈다.
+AGENTS.md의 'QA 이슈' 절차대로 아래 인수 조건을 표처럼 하나씩 실행한다. 실패한 줄마다 [버그] 이슈를 만들고, 고친 뒤 처음부터 다시 돈다.
 
-하지 말 것: QA 중에 코드를 직접 고치기(고치는 일은 [버그] 카드로)
+하지 말 것: QA 중에 코드를 직접 고치기(고치는 일은 [버그] 이슈로)
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria

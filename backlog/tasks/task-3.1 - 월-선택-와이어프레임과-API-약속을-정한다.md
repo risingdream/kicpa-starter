@@ -16,7 +16,7 @@ ordinal: 11000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 docs/wireframes/month.md에 월 선택 위치와 네 상태를 그린다. 같은 파일에 API 약속을 적는다: GET /api/receipts?month=YYYY-MM, 응답 모양은 지금과 같고 그 달 증빙과 그 달 합계만 담는다. month가 없으면 전체, 형식이 틀리면 422.
 
-이 카드가 백엔드(3.2)와 프론트(3.3)가 함께 따르는 약속이다. 합친 뒤에는 둘 다 이 약속을 바꾸지 않는다.
+이 이슈가 백엔드(3.2)와 프론트(3.3)가 함께 따르는 약속이다. 합친 뒤에는 둘 다 이 약속을 바꾸지 않는다.
 
 하지 말 것: 코드(stack/) 수정
 <!-- SECTION:DESCRIPTION:END -->
