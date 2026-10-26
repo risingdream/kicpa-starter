@@ -7,11 +7,11 @@ const BASE = process.env.STACK_URL ?? "http://localhost:5173";
 const up = await fetch(`${BASE}/api/health`).then((r) => r.ok, () => false);
 const skip = up ? false : `스택이 꺼져 있다(${BASE})`;
 
-const addApril = async (vendor) => {
+const addApril = async (vendor, supply = 1000) => {
   const res = await fetch(`${BASE}/api/receipts`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ issued_on: "2027-04-03", vendor, supply: 1000 }),
+    body: JSON.stringify({ issued_on: "2027-04-03", vendor, supply }),
   });
   assert.equal(res.status, 201);
 };
@@ -30,6 +30,15 @@ test("경계: month가 없으면 전체를 돌려준다", { skip }, async () => 
   const vendor = `가상 철물점 ${Date.now()}`;
   await addApril(vendor);
   assert.ok((await list()).items.some((r) => r.vendor === vendor));
+});
+
+test("경계: 반품(마이너스) 증빙도 그 달 합계에서 뺀다", { skip }, async () => {
+  const vendor = `가상 반품처 ${Date.now()}`;
+  await addApril(vendor, -38005);
+  const data = await list("?month=2027-04");
+  assert.equal(data.items.find((r) => r.vendor === vendor).vat, -3800);
+  assert.equal(data.total_supply, data.items.reduce((s, r) => s + r.supply, 0));
+  assert.equal(data.total_vat, data.items.reduce((s, r) => s + r.vat, 0));
 });
 
 test("예외: 2026-13, 202610처럼 형식이 틀리면 422", { skip }, async () => {
