@@ -1,6 +1,8 @@
 # Orca + Backlog.md 시연: 선행·병렬·상호 의존 스토리
 
-작업 카드는 Backlog.md(`backlog/`)에 두고, 카드마다 Orca 작업 폴더(worktree) 하나와 agent 하나를 붙인다. 이 문서는 예시 스토리 셋으로 그 흐름을 끝까지 돌리는 순서다. 강사 시연용이며, 수강생은 과정 뒤 자기 저장소에서 같은 순서로 해 본다.
+작업 카드는 Backlog.md(`backlog/`)에 두고, 카드마다 Orca 작업 폴더(worktree) 하나와 agent 하나를 붙인다. 이 문서는 예시 스토리 셋으로 그 흐름을 끝까지 돌리는 순서다.
+
+2일차 실습 F에서 수강생은 자기 저장소에서 병렬형 스토리 TASK-3을 약속(3.1)부터 QA(3.4)까지 끝까지 돌리고, 선행형 TASK-2는 첫 카드(2.1)만 맡긴다. TASK-2의 나머지(2.2~2.5)와 상호 의존형 TASK-4는 과정 뒤 과제다. 5절 시연 순서는 강사가 세 스토리를 모두 보여 줄 때 쓰고, 수강생은 과제를 할 때 같은 순서를 따른다.
 
 ## 1. 스토리 셋
 
@@ -41,6 +43,7 @@ flowchart LR
 
 ### 시작 전 준비 (한 번)
 
+0. **main을 깨끗하게 해 둔다.** main 폴더에서 `git status`를 쳐서 바뀐 파일이 없는지 본다. 실습 C-1(거래처별 합계)은 3.2·3.3과 같은 파일(`stack/api/main.py`, `stack/web/src/App.jsx`)을 고친다. 그 변경이 커밋되지 않은 채 시작하면 합칠 때 섞이므로, 커밋하거나 되돌린 뒤 시작한다.
 1. **Orca 저장소 설정의 Setup Script를 `npm install`로 둔다.** 새 작업 폴더는 깨끗한 checkout이라 `node_modules`가 없어 `npx backlog`가 돌지 않는다.
 2. **카드와 약속 문서는 main에 커밋하고 푸시한 뒤 작업 폴더를 연다.** Orca는 기본으로 `origin/main`에서 갈라진다. 푸시하지 않은 카드는 새 폴더에 없다.
 3. **Orca가 agent를 권한 확인 없이 띄운다는 것을 안다.** Orca는 Claude Code를 `--dangerously-skip-permissions`, Codex를 `--dangerously-bypass-approvals-and-sandbox`로 띄우는 것이 기본이다. agent가 묻지 않고 명령을 실행하므로, 수강생 노트북에서는 Settings → Agents에서 그 agent의 launch arguments를 지워 확인을 받게 하거나 고객 자료가 없는 저장소에서만 쓴다.
@@ -58,6 +61,29 @@ orca worktree create --repo id:<저장소 id> --name task-3-3 --agent claude --p
 ```
 
 저장소 id는 `orca repo list`로 본다.
+
+### 작업 폴더의 브랜치를 main에 합치기
+
+Orca는 작업 폴더마다 브랜치를 하나 만든다. 이름은 Orca 설정의 접두어가 붙어 `<접두어>/task-3-2`처럼 된다. 리허설에서는 이렇게 합쳤다.
+
+1. 작업 폴더에서 결과를 확인하고 그 폴더 agent에게 커밋하게 한다(카드 상태 변경도 함께 커밋된다). 커밋하지 않은 변경은 합쳐지지 않는다.
+2. main 폴더의 agent에게 맡긴다.
+
+   > task-3-2와 task-3-3 작업 폴더의 브랜치를 main에 차례로 합치고 푸시해 줘. 충돌이 나면 고치지 말고 멈춰서 알려 줘. 합친 뒤 `npm test` 결과를 보여 줘.
+
+   agent가 하는 일은 브랜치마다 다음 한 줄이다. 합침 커밋이 따로 남아 나중에 어느 카드가 언제 들어왔는지 보인다.
+
+   ```bash
+   git branch --list '*task-3-*'                  # 브랜치 이름 확인
+   git merge --no-ff <접두어>/task-3-2 -m "Merge TASK-3.2"
+   git merge --no-ff <접두어>/task-3-3 -m "Merge TASK-3.3"
+   git push
+   ```
+
+3. 충돌이 나면(`CONFLICT`) agent가 멈추고 어느 파일인지 알린다. 사람이 어느 쪽을 살릴지 정한 뒤 고치게 한다. 그만두려면 `git merge --abort`.
+4. 합친 뒤 QA 카드는 main 폴더에서 새 세션으로 연다.
+
+선행형 폴더(`task-2`)에 main을 들일 때는 방향만 반대다. `task-2` 폴더에서 `git merge main`을 친다(2절 표, 4절 첫 줄).
 
 ### 스택을 동시에 띄울 때
 
