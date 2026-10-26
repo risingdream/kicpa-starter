@@ -49,7 +49,13 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 - 스택 테스트가 넣은 증빙은 테스트가 끝날 때 `DELETE /api/receipts/{id}`로 지운다(`after()`). 남기면 사용자가 보는 장부 화면에 테스트 줄이 섞인다.
 - 스택 테스트를 고쳤으면 깨끗한 스택에서 한 번, 같은 스택에서 한 번 더 `npm test`를 돌려 둘 다 통과하는지 본다.
 - 작업 범위 밖의 파일은 고치지 않는다. 필요해 보이면 제안만 한다.
-- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler`(배포)와 `backlog.md`(작업 관리) 둘이다. `stack/`은 따로 `stack/api/requirements.txt`와 `stack/web/package.json`에 고정돼 있다. `stack/web`에는 2일차 B1에서 쓸 Tailwind CSS·shadcn/ui 패키지를 미리 넣어 두었다(설정과 부품은 B1에서 만든다).
+- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler`(배포)와 `backlog.md`(작업 관리) 둘이다. `stack/`은 따로 `stack/api/requirements.txt`와 `stack/web/package.json`에 고정돼 있다. `stack/web`에는 Tailwind CSS·shadcn/ui가 설정돼 있다(아래 '화면 디자인').
+
+## 화면 디자인
+
+- `stack/web`의 새 화면은 `src/components/ui`의 shadcn/ui 부품과 Tailwind 테마 색(`src/style.css`의 `--color-*`)만 쓴다. 색 값을 직접 적거나 같은 역할의 부품을 새로 만들지 않는다.
+- 필요한 부품이 없으면 `stack/web`에서 `npx shadcn@4.22.1 add <부품 이름>`으로 가져온다. 가져온 부품은 `cn`을 `@/lib/utils`에서 불러와야 한다(npm의 `cn` 패키지를 깔지 않는다).
+- 금액 칸은 오른쪽 정렬(`text-right tabular-nums`), 자료가 없으면 "표시할 거래가 없습니다"를 보인다.
 
 ## 자료와 비밀값
 

@@ -1,7 +1,22 @@
 import { useEffect, useState } from "react";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { vendorTotals } from "./vendorTotals.js";
 
 const won = (n) => n.toLocaleString("ko-KR") + "원";
 const today = () => new Date().toISOString().slice(0, 10);
+const EMPTY = "표시할 거래가 없습니다";
+const num = "text-right tabular-nums";
+
+function Section({ title, children }) {
+  return (
+    <section className="mt-6">
+      <h2 className="mb-2 text-base font-semibold">{title}</h2>
+      <div className="rounded-md border bg-white">{children}</div>
+    </section>
+  );
+}
+
+const Empty = () => <p className="px-3 py-6 text-center text-sm text-muted-foreground">{EMPTY}</p>;
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -45,16 +60,36 @@ export default function App() {
       </form>
 
       {error && <p className="error">{error}</p>}
+      {!data && !error && <p className="text-sm text-muted-foreground">불러오는 중입니다…</p>}
       {data && (
-        <table>
-          <thead><tr><th>날짜</th><th>거래처</th><th>공급가액</th><th>부가세</th></tr></thead>
-          <tbody>
-            {data.items.map((r) => (
-              <tr key={r.id}><td>{r.issued_on}</td><td>{r.vendor}</td><td>{won(r.supply)}</td><td>{won(r.vat)}</td></tr>
-            ))}
-          </tbody>
-          <tfoot><tr><th colSpan="2">합계</th><th>{won(data.total_supply)}</th><th>{won(data.total_vat)}</th></tr></tfoot>
-        </table>
+        <>
+          <Section title="증빙 목록">
+            {data.items.length === 0 ? <Empty /> : (
+              <Table>
+                <TableHeader><TableRow><TableHead>날짜</TableHead><TableHead>거래처</TableHead><TableHead className={num}>공급가액</TableHead><TableHead className={num}>부가세</TableHead></TableRow></TableHeader>
+                <TableBody>
+                  {data.items.map((r) => (
+                    <TableRow key={r.id}><TableCell>{r.issued_on}</TableCell><TableCell>{r.vendor}</TableCell><TableCell className={num}>{won(r.supply)}</TableCell><TableCell className={num}>{won(r.vat)}</TableCell></TableRow>
+                  ))}
+                </TableBody>
+                <TableFooter><TableRow><TableCell colSpan={2}>합계</TableCell><TableCell className={num}>{won(data.total_supply)}</TableCell><TableCell className={num}>{won(data.total_vat)}</TableCell></TableRow></TableFooter>
+              </Table>
+            )}
+          </Section>
+
+          <Section title="거래처별 합계">
+            {data.items.length === 0 ? <Empty /> : (
+              <Table>
+                <TableHeader><TableRow><TableHead>거래처</TableHead><TableHead className={num}>공급가액 합계</TableHead><TableHead className={num}>부가세 합계</TableHead></TableRow></TableHeader>
+                <TableBody>
+                  {vendorTotals(data.items).map((t) => (
+                    <TableRow key={t.vendor}><TableCell>{t.vendor}</TableCell><TableCell className={num}>{won(t.supply)}</TableCell><TableCell className={num}>{won(t.vat)}</TableCell></TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </Section>
+        </>
       )}
     </main>
   );

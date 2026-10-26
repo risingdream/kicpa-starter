@@ -1,13 +1,49 @@
-body { margin: 0; font-family: system-ui, sans-serif; color: #1f2328; background: #f6f7f9; }
-main { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
-h1 { margin: 0 0 4px; font-size: 1.5rem; }
-.note { margin: 0 0 20px; color: #656d76; font-size: 0.875rem; }
-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin-bottom: 20px; }
-label { display: grid; gap: 4px; font-size: 0.8125rem; color: #656d76; }
-input, button { height: 36px; padding: 0 10px; font: inherit; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
-button { background: #1f6feb; color: #fff; border-color: #1f6feb; cursor: pointer; }
-table { width: 100%; border-collapse: collapse; background: #fff; }
-th, td { padding: 8px 10px; border-bottom: 1px solid #d0d7de; text-align: left; }
-td:nth-child(n+3), th:nth-child(n+3) { text-align: right; }
-tfoot th { background: #f6f7f9; }
-.error { color: #cf222e; }
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* shadcn/ui 색 이름(muted, border 등)을 Tailwind에 알려 준다. neutral 밝은 테마만 쓴다. */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+/* 원래 화면 규칙. 가장 약한 base 층에 두어, shadcn/ui 표의 Tailwind 스타일이 이긴다. */
+@layer base {
+  * { border-color: var(--color-border); }
+  body { margin: 0; font-family: system-ui, sans-serif; color: #1f2328; background: #f6f7f9; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+  h1 { margin: 0 0 4px; font-size: 1.5rem; font-weight: 700; }
+  .note { margin: 0 0 20px; color: #656d76; font-size: 0.875rem; }
+  form { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin-bottom: 20px; }
+  label { display: grid; gap: 4px; font-size: 0.8125rem; color: #656d76; }
+  input, button { height: 36px; padding: 0 10px; font: inherit; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
+  button { background: #1f6feb; color: #fff; border-color: #1f6feb; cursor: pointer; }
+  .error { color: #cf222e; }
+}
