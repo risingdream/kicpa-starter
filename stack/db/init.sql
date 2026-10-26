@@ -4,7 +4,7 @@ CREATE TABLE receipts (
   id          SERIAL PRIMARY KEY,
   issued_on   DATE        NOT NULL,
   vendor      TEXT        NOT NULL,
-  supply      BIGINT      NOT NULL CHECK (supply >= 0),
+  supply      BIGINT      NOT NULL CHECK (supply <> 0), -- 반품·에누리는 마이너스
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

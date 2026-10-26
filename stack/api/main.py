@@ -14,12 +14,13 @@ app = FastAPI(title="매입 증빙 API")
 class NewReceipt(BaseModel):
     issued_on: date
     vendor: str = Field(min_length=1, max_length=50)
-    supply: int = Field(ge=0, le=10_000_000_000)
+    # 반품·에누리(수정세금계산서)는 공급가액이 마이너스다. 0원은 의미 없는 증빙이라 아래에서 막는다.
+    supply: int = Field(ge=-10_000_000_000, le=10_000_000_000)
 
 
 def vat(supply: int) -> int:
-    """부가세는 공급가액의 10%, 원 미만은 버린다."""
-    return supply // 10
+    """부가세는 공급가액의 10%, 원 미만은 0 쪽으로 버린다(-38,005원 → -3,800원)."""
+    return supply // 10 if supply >= 0 else -(-supply // 10)
 
 
 def row(r) -> dict:
@@ -46,6 +47,8 @@ def add_receipt(body: NewReceipt):
     vendor = body.vendor.strip()
     if not vendor:
         raise HTTPException(422, "거래처를 적으세요")
+    if body.supply == 0:
+        raise HTTPException(422, "공급가액이 0원인 증빙은 넣지 않습니다")
     with psycopg.connect(DATABASE_URL) as conn:
         r = conn.execute(
             "INSERT INTO receipts (issued_on, vendor, supply) VALUES (%s, %s, %s) RETURNING id, issued_on, vendor, supply",
