@@ -55,3 +55,11 @@ def add_receipt(body: NewReceipt):
             (body.issued_on, vendor, body.supply),
         ).fetchone()
     return row(r)
+
+
+@app.delete("/api/receipts/{receipt_id}", status_code=204)
+def delete_receipt(receipt_id: int):
+    """테스트가 넣은 가상 증빙을 끝나고 지울 때 쓴다. 화면에는 지우기 단추가 없다."""
+    with psycopg.connect(DATABASE_URL) as conn:
+        if conn.execute("DELETE FROM receipts WHERE id = %s", (receipt_id,)).rowcount == 0:
+            raise HTTPException(404, "그런 증빙이 없습니다")

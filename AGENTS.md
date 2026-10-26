@@ -46,9 +46,10 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 - 새 기능에는 정상·경계·예외 사례 테스트를 함께 만든다. 테스트는 `test/`에 두고 Node 내장 `node:test`를 쓴다.
 - 띄워 둔 스택(`stack/`)에 요청을 보내는 테스트는 다른 테스트 파일과 동시에 돌고, 같은 DB에서 여러 번 돈다. 그래서 예시 자료 개수, 전체 합계, 요청 전후의 개수 차이처럼 다른 테스트나 지난 실행이 바꿀 수 있는 값을 기대하지 않는다.
 - 스택 테스트는 다른 테스트가 쓰지 않는 달(예: 2027-03)을 쓰고, 넣는 가상 증빙의 거래처 이름에 실행마다 달라지는 표시를 붙인다(예: `가상 공구상 ${Date.now()}`). 확인은 방금 넣은 그 줄로만 한다.
+- 스택 테스트가 넣은 증빙은 테스트가 끝날 때 `DELETE /api/receipts/{id}`로 지운다(`after()`). 남기면 사용자가 보는 장부 화면에 테스트 줄이 섞인다.
 - 스택 테스트를 고쳤으면 깨끗한 스택에서 한 번, 같은 스택에서 한 번 더 `npm test`를 돌려 둘 다 통과하는지 본다.
 - 작업 범위 밖의 파일은 고치지 않는다. 필요해 보이면 제안만 한다.
-- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler`(배포)와 `backlog.md`(작업 관리) 둘이다. `stack/`은 따로 `stack/api/requirements.txt`와 `stack/web/package.json`에 고정돼 있다.
+- 새 패키지 설치는 사용자에게 먼저 묻는다. 지금 의존성은 `wrangler`(배포)와 `backlog.md`(작업 관리) 둘이다. `stack/`은 따로 `stack/api/requirements.txt`와 `stack/web/package.json`에 고정돼 있다. `stack/web`에는 2일차 B1에서 쓸 Tailwind CSS·shadcn/ui 패키지를 미리 넣어 두었다(설정과 부품은 B1에서 만든다).
 
 ## 자료와 비밀값
 
@@ -80,7 +81,7 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 - `public/` — 화면 파일. 그대로 보여 준다.
 - `src/index.js` — `public/`에 없는 주소(`/api/...`)를 받는다.
 - `src/vat.js` — 계산 예시. 계산은 화면이 아니라 `src/`에 두고 테스트한다.
-- `docs/` — 첫 개발 한 장, 와이어프레임, QA·배포 점검표 서식. 2일차 체크포인트 브랜치(`day2-done`, `day2-qa-bug`)와 자료 되돌리는 법은 `docs/day2-checkpoints.md`.
+- `docs/` — 첫 개발 한 장, 와이어프레임, QA·배포 점검표 서식. 2일차 체크포인트 브랜치(`day2-b1-done`, `day2-done`, `day2-qa-bug`)와 자료 되돌리는 법은 `docs/day2-checkpoints.md`. 사용자가 "완성본으로 바꿔 타 줘", "증빙 3건으로 되돌려 줘"처럼 업무 말로 시키면 그 문서의 '에이전트가 따를 절차'대로 한다.
 - `backlog/` — 이슈(스토리·작업)와 설정(`config.yml`). Backlog.md가 관리한다.
 - `stack/` — 2일차 거래처별 합계(`TASK-5`)와 3일차 실습 E의 Docker 스택(매입 증빙 장부). Python API(`api/`), React 화면(`web/`), PostgreSQL(`db/`)을 `compose.yaml` 하나로 띄운다. 설명은 `stack/README.md`. 이미지 버전은 바꾸지 않는다. DB 구조를 바꾸면 이미 있는 DB에는 `init.sql`이 다시 돌지 않는다는 점을 사용자에게 알린다. 터널(`--profile tunnel`)은 사용자가 시킬 때만 띄운다.
 

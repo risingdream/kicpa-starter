@@ -4,6 +4,7 @@ title: 거래처별 합계를 QA한다
 status: 할 일
 assignee: []
 created_date: '2026-10-26 14:09'
+updated_date: '2026-10-27 00:00'
 labels:
   - QA
 dependencies:
@@ -15,7 +16,7 @@ ordinal: 23000
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-2일차 B3. 5.2 결과(또는 버그를 심은 연습용 브랜치 day2-qa-bug)를 AGENTS.md의 'QA 이슈' 절차대로 확인한다. 깨끗한 스택(증빙 3건)에서 시작하고, 인수 조건 한 줄이 QA 표 한 줄이다. 2번(빈 상태)을 본 뒤 3번 전에 자료를 증빙 3건으로 되돌린다(docs/day2-checkpoints.md).
+2일차 B3. 5.2 결과(또는 B2까지 끝난 상태의 QA 연습판 브랜치 day2-qa-bug)를 AGENTS.md의 'QA 이슈' 절차대로 확인한다. 깨끗한 스택(증빙 3건)에서 시작하고, 인수 조건 한 줄이 QA 표 한 줄이다. 2번(빈 상태)을 본 뒤 3번 전에 자료를 증빙 3건으로 되돌린다(docs/day2-checkpoints.md).
 
 실패한 줄은 [버그] 이슈에 재현 순서·기대값·실제값을 적는다. 고치기를 요청하고 실패한 줄 하나를 다시 확인한다. 고치지 못해도 기록이 남았으면 이 이슈의 실습은 통과다.
 
