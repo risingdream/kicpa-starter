@@ -7,10 +7,11 @@ export default function App() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [form, setForm] = useState({ issued_on: today(), vendor: "", supply: "" });
+  const [month, setMonth] = useState("");
 
   const load = async () => {
     try {
-      const res = await fetch("/api/receipts");
+      const res = await fetch(month ? `/api/receipts?month=${month}` : "/api/receipts");
       if (!res.ok) throw new Error(`서버 응답 ${res.status}`);
       setData(await res.json());
       setError("");
@@ -18,7 +19,7 @@ export default function App() {
       setError("목록을 가져오지 못했습니다: " + e.message);
     }
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [month]);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -44,8 +45,14 @@ export default function App() {
         <button type="submit">추가</button>
       </form>
 
+      <div className="month">
+        <label>월<input type="month" value={month} onChange={(e) => setMonth(e.target.value)} /></label>
+        <button type="button" onClick={() => setMonth("")}>전체 보기</button>
+      </div>
+
       {error && <p className="error">{error}</p>}
-      {data && (
+      {data && data.items.length === 0 && month && <p className="note">이 달 증빙이 없습니다</p>}
+      {data && (data.items.length > 0 || !month) && (
         <table>
           <thead><tr><th>날짜</th><th>거래처</th><th>공급가액</th><th>부가세</th></tr></thead>
           <tbody>
