@@ -1,4 +1,4 @@
-# 한공회 3일차 실습 E: Python API + React 화면 + PostgreSQL DB를 내 노트북에 한꺼번에 띄운다.
+# 한공회 2일차 실습 C-1·3일차 실습 E: Python API + React 화면 + PostgreSQL DB를 내 노트북에 한꺼번에 띄운다.
 # 띄우기: docker compose up -d --build   →   http://localhost:5173
 # 인터넷에 열기: docker compose --profile tunnel up -d tunnel   (주소는 docker compose logs tunnel)
 # 끄기: docker compose down   (DB 자료는 남는다. down -v는 자료까지 지운다)

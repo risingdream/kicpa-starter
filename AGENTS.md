@@ -50,7 +50,7 @@
 | 작업 보드(웹) 띄우기 | `npm run board` → <http://localhost:6420> |
 | 작업 목록 보기 | `npx backlog task list --plain` |
 | 배포 (승인 뒤) | `npm run deploy` |
-| Docker 스택 띄우기 (실습 E) | `stack/` 폴더에서 `docker compose up -d --build` → <http://localhost:5173> |
+| Docker 스택 띄우기 (실습 C-1·E) | `stack/` 폴더에서 `docker compose up -d --build` → <http://localhost:5173> |
 
 ## 구조
 
@@ -59,7 +59,7 @@
 - `src/vat.js` — 계산 예시. 계산은 화면이 아니라 `src/`에 두고 테스트한다.
 - `docs/` — 첫 개발 한 장, 와이어프레임, QA·배포 점검표 서식.
 - `backlog/` — 작업 카드(스토리·작업)와 설정(`config.yml`). Backlog.md가 관리한다.
-- `stack/` — 3일차 실습 E의 Docker 스택. Python API(`api/`), React 화면(`web/`), PostgreSQL(`db/`)을 `compose.yaml` 하나로 띄운다. 설명은 `stack/README.md`. 이미지 버전은 바꾸지 않는다. DB 구조를 바꾸면 이미 있는 DB에는 `init.sql`이 다시 돌지 않는다는 점을 사용자에게 알린다. 터널(`--profile tunnel`)은 사용자가 시킬 때만 띄운다.
+- `stack/` — 2일차 실습 C-1과 3일차 실습 E의 Docker 스택(매입 증빙 장부). Python API(`api/`), React 화면(`web/`), PostgreSQL(`db/`)을 `compose.yaml` 하나로 띄운다. 설명은 `stack/README.md`. 이미지 버전은 바꾸지 않는다. DB 구조를 바꾸면 이미 있는 DB에는 `init.sql`이 다시 돌지 않는다는 점을 사용자에게 알린다. 터널(`--profile tunnel`)은 사용자가 시킬 때만 띄운다.
 
 <!-- BACKLOG.MD GUIDELINES START -->
 <!-- backlog.md-instructions-version: 1.54.0 -->
