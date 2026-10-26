@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 import psycopg
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 
 DATABASE_URL = os.environ["DATABASE_URL"]
@@ -34,9 +34,15 @@ def health():
 
 
 @app.get("/api/receipts")
-def list_receipts():
+def list_receipts(month: str | None = Query(None, pattern=r"^\d{4}-(0[1-9]|1[0-2])$")):
+    """month(YYYY-MM)를 주면 그 달 증빙과 그 달 합계만 돌려준다(docs/wireframes/month.md)."""
+    sql = "SELECT id, issued_on, vendor, supply FROM receipts"
+    params: tuple = ()
+    if month:
+        sql += " WHERE to_char(issued_on, 'YYYY-MM') = %s"
+        params = (month,)
     with psycopg.connect(DATABASE_URL) as conn:
-        rows = conn.execute("SELECT id, issued_on, vendor, supply FROM receipts ORDER BY issued_on, id").fetchall()
+        rows = conn.execute(sql + " ORDER BY issued_on, id", params).fetchall()
     items = [row(r) for r in rows]
     return {"items": items, "total_supply": sum(i["supply"] for i in items), "total_vat": sum(i["vat"] for i in items)}
 
