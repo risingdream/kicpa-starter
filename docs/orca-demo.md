@@ -2,7 +2,9 @@
 
 작업 카드는 Backlog.md(`backlog/`)에 두고, 카드마다 Orca 작업 폴더(worktree) 하나와 agent 하나를 붙인다. 이 문서는 예시 스토리 셋으로 그 흐름을 끝까지 돌리는 순서다.
 
-2일차 실습 F에서 수강생은 자기 저장소에서 병렬형 스토리 TASK-3을 약속(3.1)부터 QA(3.4)까지 끝까지 돌리고, 선행형 TASK-2는 첫 카드(2.1)만 맡긴다. TASK-2의 나머지(2.2~2.5)와 상호 의존형 TASK-4는 과정 뒤 과제다. 5절 시연 순서는 강사가 세 스토리를 모두 보여 줄 때 쓰고, 수강생은 과제를 할 때 같은 순서를 따른다.
+2일차 B3에서는 **강사가 20분 동안 시연**만 하고, 수강생은 Orca를 직접 조작하지 않는다. 시연은 병렬형 스토리 TASK-3을 미리 만들어 둔 단계별 브랜치로 보여 준다(5절). 수강생의 B3 실습은 거래처별 합계 QA(`TASK-5.3`, [`day2-checkpoints.md`](day2-checkpoints.md))다.
+
+TASK-2~TASK-4를 Orca로 직접 끝까지 돌리는 일은 **과정 뒤 과제**다. 1~4절과 6절의 전체 순서는 그 과제를 할 때 따른다.
 
 ## 1. 스토리 셋
 
@@ -43,7 +45,7 @@ flowchart LR
 
 ### 시작 전 준비 (한 번)
 
-0. **main을 깨끗하게 해 둔다.** main 폴더에서 `git status`를 쳐서 바뀐 파일이 없는지 본다. 실습 C-1(거래처별 합계)은 3.2·3.3과 같은 파일(`stack/api/main.py`, `stack/web/src/App.jsx`)을 고친다. 그 변경이 커밋되지 않은 채 시작하면 합칠 때 섞이므로, 커밋하거나 되돌린 뒤 시작한다.
+0. **main을 깨끗하게 해 둔다.** main 폴더에서 `git status`를 쳐서 바뀐 파일이 없는지 본다. 2일차 거래처별 합계(`TASK-5`)는 3.2·3.3과 같은 파일(`stack/api/main.py`, `stack/web/src/App.jsx`)을 고친다. 그 변경이 커밋되지 않은 채 시작하면 합칠 때 섞이므로, 커밋하거나 되돌린 뒤 시작한다.
 1. **Orca 저장소 설정의 Setup Script를 `npm install`로 둔다.** 새 작업 폴더는 깨끗한 checkout이라 `node_modules`가 없어 `npx backlog`가 돌지 않는다.
 2. **카드와 약속 문서는 main에 커밋하고 푸시한 뒤 작업 폴더를 연다.** Orca는 기본으로 `origin/main`에서 갈라진다. 푸시하지 않은 카드는 새 폴더에 없다.
 3. **Orca가 agent를 권한 확인 없이 띄운다는 것을 안다.** Orca는 Claude Code를 `--dangerously-skip-permissions`, Codex를 `--dangerously-bypass-approvals-and-sandbox`로 띄우는 것이 기본이다. agent가 묻지 않고 명령을 실행하므로, 수강생 노트북에서는 Settings → Agents에서 그 agent의 launch arguments를 지워 확인을 받게 하거나 고객 자료가 없는 저장소에서만 쓴다.
@@ -136,20 +138,55 @@ QA 카드는 기능을 만들지 않고 인수 조건을 표처럼 하나씩 해
 | 스택 테스트가 함께 통과하는가 | 동시 실행 문제는 [버그] 카드로 고쳐 70회 연속 통과했다. 같은 스택에서 다시 돌릴 때 실패하는 테스트가 하나 더 나와 규칙에 "실행마다 다른 표시"를 더했다 |
 | QA 반복 | 3.4는 1회차 통과 뒤 약한 곳을 더해 2회차에 통과, 2.5·4.4는 1회차에 통과(4.4는 회귀 9줄 포함) |
 
-## 5. 시연 순서 (약 40분)
+## 5. 강사 시연 (2일차 B3, 20분)
+
+에이전트가 코드를 다 쓸 때까지 기다리지 않는다. 각 장면의 끝 상태를 브랜치로 미리 만들어 두었다. 에이전트는 시작하는 모습만 보여 주고, 결과는 브랜치로 바꿔서 보여 준다.
+
+| 브랜치 | 들어 있는 것 |
+|---|---|
+| `demo-task3-contract` | `main` + 3.1 결과: `docs/wireframes/month.md`(월 선택 배치·상태·API 약속) |
+| `demo-task3-api` | `demo-task3-contract` + 3.2 결과: `GET /api/receipts?month=YYYY-MM`(형식이 틀리면 422) |
+| `demo-task3-web` | `demo-task3-contract` + 3.3 결과: 월 선택, '전체 보기', "이 달 증빙이 없습니다" |
+| `demo-task3-merged` | 위 둘을 합친 결과. 3.4 QA 네 줄이 통과한다 |
+
+| 시간 | 장면 | 화면 | 짚을 말 |
+|---|---|---|---|
+| 0~4분 | 보드에서 TASK-3과 카드 넷, 의존 관계를 보여 주고 `demo-task3-contract`의 `month.md`를 연다 | `npm run board`, 약속 문서 | 나눠 맡기기 전에 둘이 따를 약속부터 정한다 |
+| 4~8분 | Orca에서 `task-3-2`·`task-3-3` 폴더를 열어 두 에이전트에게 카드를 주고, 계획을 쓰기 시작하는 것까지만 본다 | Orca 폴더 둘이 나란히 | 각자 고치는 폴더가 다르다(`stack/api` ∥ `stack/web`) |
+| 8~13분 | 미리 만든 두 브랜치를 차례로 합친다(아래 명령). 충돌이 없는 이유를 보여 준다 | 터미널 | 따로 끝난 결과를 합쳐야 하나의 제품이 된다 |
+| 13~17분 | 합친 결과를 띄워 3.4 인수 조건 네 줄을 화면에서 확인한다 | 브라우저 | 둘 다 "완료"여도 합친 결과를 다시 확인한다 |
+| 17~20분 | 3절 QA 반복 표(리허설 기록)를 보여 주고 수강생 QA 실습(`TASK-5.3`)으로 넘긴다 | 이 문서 3절 | 완료는 검증을 통과했을 때다 |
+
+8~13분 장면의 합치기 명령(시연용 브랜치를 새로 만들어 합치므로 체크포인트 브랜치는 그대로 남는다):
+
+```bash
+git switch -c demo-run demo-task3-contract
+git merge --no-ff demo-task3-api -m "Merge TASK-3.2"
+git merge --no-ff demo-task3-web -m "Merge TASK-3.3"
+git diff demo-task3-merged --stat     # 아무것도 나오지 않으면 준비한 합친 결과와 같다
+cd stack && docker compose down -v && docker compose up -d --build
+```
+
+시연이 끝나면 `git switch main && git branch -D demo-run`으로 지운다. 에이전트가 늦거나 Orca가 말을 듣지 않으면 4~8분 장면을 건너뛰고 브랜치만으로 진행한다.
+
+시연용 저장소는 과정 전에 `--include-all-branches`로 만들어 두거나, 이미 있는 저장소에 `git fetch https://github.com/risingdream/kicpa-starter demo-task3-contract:demo-task3-contract demo-task3-api:demo-task3-api demo-task3-web:demo-task3-web demo-task3-merged:demo-task3-merged`로 가져온다.
+
+### 과정 뒤 과제: 전체 순서 (약 40분)
+
+수강생이 과정 뒤에 TASK-2~TASK-4를 직접 돌릴 때의 순서다.
 
 | 순서 | 무엇을 | 화면 |
 |---|---|---|
-| 1 | 보드에서 스토리 셋과 의존 관계를 보여 준다 | main 폴더 `npm run board` |
+| 1 | 보드에서 스토리 셋과 의존 관계를 본다 | main 폴더 `npm run board` |
 | 2 | **선행형**: `task-2`를 열고 2.1~2.4를 카드마다 새 세션으로 진행한다. 계획 승인 → 결과 확인을 매번 하고, 카드 사이에 main을 합친다 | Orca `task-2` 하나 |
 | 3 | **병렬형**: main에서 3.1 약속을 확정·커밋·푸시하고, `task-3-2`·`task-3-3`을 동시에 연다 | Orca 폴더 둘이 나란히 |
 | 4 | 두 결과를 Orca 차이 보기에서 검토하고(줄 댓글 하나로 다시 고치게 함) 커밋해 main에 합친다 | Orca Source Control |
 | 5 | **QA 반복**: 3.4를 돌려 실패 → `[버그]` 카드 → 수정 → 재QA 통과까지 | Orca 브라우저 탭 |
 | 6 | 2.5 QA를 돌리고 스토리 2를 합친다 | |
 | 7 | **상호 의존형**: 4.1 약속을 정한 뒤 `task-4-2`·`task-4-3`을 연다. 4.4에서 회귀 QA까지 돈다 | |
-| 8 | 보드에서 모든 카드가 `완료`로 바뀐 것과 각 카드의 최종 요약을 보여 준다 | main 폴더 보드 |
+| 8 | 보드에서 모든 카드가 `완료`로 바뀐 것과 각 카드의 최종 요약을 본다 | main 폴더 보드 |
 
-시간이 부족하면 2번(선행형)은 2.1·2.2까지만 보여 주고, 3·5번(병렬형과 QA 반복)에 시간을 쓴다.
+시간이 부족하면 2번(선행형)은 2.1·2.2까지만 하고, 3·5번(병렬형과 QA 반복)에 시간을 쓴다.
 
 ## 6. 다 끝나면
 

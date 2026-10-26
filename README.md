@@ -8,7 +8,7 @@
 - **작은 API 하나** — 화면이 계산을 맡기는 주소 `/api/vat`(`src/`). API는 화면이 서버에 일을 시키는 창구입니다
 - **Cloudflare 배포 설정** — 이 저장소를 인터넷 주소로 여는 설정(`wrangler.toml`). 배포는 내 컴퓨터에서 만든 것을 다른 사람도 열 수 있는 곳에 올리는 일입니다
 
-2일차 실습 C-1과 3일차 실습 E에서 쓰는 **Docker 스택**(매입 증빙 장부)은 `stack/` 폴더에 따로 있습니다. Python API·React 화면·PostgreSQL DB를 내 노트북에 띄우고, 2일차에는 기능 하나를 더해 보고 3일차에는 Cloudflare 터널로 엽니다. 설명은 [`stack/README.md`](stack/README.md)를 봅니다.
+2일차와 3일차 실습 E에서 쓰는 **Docker 스택**(매입 증빙 장부)은 `stack/` 폴더에 따로 있습니다. Python API·React 화면·PostgreSQL DB를 내 노트북에 띄우고, 2일차에는 거래처별 합계(`TASK-5`)를 더해 보고 3일차에는 Cloudflare 터널로 엽니다. 2일차에 막히면 바꿔 탈 완성본·QA 연습용 브랜치는 [`docs/day2-checkpoints.md`](docs/day2-checkpoints.md)에 있습니다. 설명은 [`stack/README.md`](stack/README.md)를 봅니다.
 
 실습에서는 이 예시를 내 업무 도구로 바꿔 갑니다. 코드는 agent(Claude Code·Codex·OpenCode)가 쓰고, 나는 무엇을 만들지 정하고 결과를 확인합니다.
 
@@ -21,7 +21,7 @@
 | Node.js (LTS 버전) | 터미널에서 `node -v` → `v20` 이상 | [nodejs.org](https://nodejs.org)에서 LTS 설치 |
 | GitHub CLI(`gh`) | 터미널에서 `gh --version` | [cli.github.com](https://cli.github.com)에서 설치 |
 | coding agent 1개 (Claude Code·Codex·OpenCode) | 터미널에서 `claude`·`codex`·`opencode` | 과정 사전 과제 안내를 따른다 |
-| Docker Desktop | 터미널에서 `docker compose version` | [docker.com](https://www.docker.com/products/docker-desktop/)에서 설치. 2일차 실습 C-1과 3일차 실습 E에서 쓴다 |
+| Docker Desktop | 터미널에서 `docker compose version` | [docker.com](https://www.docker.com/products/docker-desktop/)에서 설치. 2일차와 3일차 실습 E에서 쓴다 |
 
 터미널은 명령을 글자로 치는 창입니다. macOS는 "터미널", 윈도는 "PowerShell"을 엽니다. 설치한 뒤에는 터미널을 새로 열어야 명령이 잡힙니다.
 
@@ -90,7 +90,7 @@ npx backlog task list --plain   # 작업 목록을 터미널에 보여 준다
 npm run board                   # 작업 보드를 브라우저로 연다 (멈출 때 Ctrl + C)
 ```
 
-작업 보드는 `할 일 / 진행 중 / 완료` 세 칸으로 된 화면(<http://localhost:6420>)입니다. 메뉴는 영어지만 카드와 칸 이름은 한국어입니다. 예시로 스토리 넷이 들어 있습니다. `TASK-1`(부가세 계산기)은 실습에서 카드 모양을 보는 용도이고, `TASK-2`~`TASK-4`(매입 증빙 장부의 공제 표시·월 선택·CSV 내려받기)는 여러 agent를 나란히 돌리는 시연용입니다. 시연 순서는 [`docs/orca-demo.md`](docs/orca-demo.md)에 있습니다.
+작업 보드는 `할 일 / 진행 중 / 완료` 세 칸으로 된 화면(<http://localhost:6420>)입니다. 메뉴는 영어지만 카드와 칸 이름은 한국어입니다. 예시로 스토리 다섯이 들어 있습니다. `TASK-1`(부가세 계산기)은 카드 모양을 보는 용도이고, `TASK-5`(매입 증빙 장부의 거래처별 합계)는 2일차 하루 실습입니다(와이어프레임 → 구현 → QA). `TASK-2`~`TASK-4`(공제 표시·월 선택·CSV 내려받기)는 여러 agent를 나란히 돌리는 강사 시연과 과정 뒤 과제용입니다. 시연 순서는 [`docs/orca-demo.md`](docs/orca-demo.md)에 있습니다.
 
 작업 카드에는 두 가지 확인 목록이 붙습니다.
 
@@ -131,7 +131,8 @@ npm run deploy       # Cloudflare에 올린다
 | `docs/first-dev-one-pager.md` | 첫 개발 한 장 서식 |
 | `docs/wireframe.md` | 화면 기획(아스키 와이어프레임) 서식 |
 | `docs/qa-deploy-checklist.md` | QA·배포 점검표 |
-| `docs/orca-demo.md` | Orca로 카드 여러 장을 나란히 돌리는 시연 순서(선행·병렬·상호 의존 스토리, QA 반복) |
+| `docs/day2-checkpoints.md` | 2일차 거래처별 합계의 브랜치(`day2-done`·`day2-qa-bug`) 가져오기·바꾸기, 자료 되돌리기 |
+| `docs/orca-demo.md` | Orca로 카드 여러 장을 나란히 돌리는 강사 시연과 과정 뒤 과제 순서(선행·병렬·상호 의존 스토리, QA 반복) |
 | `backlog/` | 작업 카드(`tasks/`)와 작업 도구 설정(`config.yml`) |
 
 ## 지킬 것
