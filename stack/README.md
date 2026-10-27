@@ -8,7 +8,7 @@ Python API, React 화면, PostgreSQL DB를 내 노트북에 **한꺼번에** 띄
 
 | 이름 | 하는 일 | 코드 | 바깥에서 열 수 있나 |
 |---|---|---|---|
-| `web` | React 화면. `/api/...` 요청은 `api`로 넘긴다 | `web/src/` | 예. <http://localhost:5173> |
+| `web` | React 화면. `/api/...` 요청은 `api`로 넘긴다 | `web/src/` | 이 노트북 안에서만. <http://localhost:5173>. 내 휴대폰에서는 Tailscale serve로 연다 |
 | `api` | Python(FastAPI) 서버. DB를 읽고 쓴다 | `api/main.py` | 아니오. `web`을 거쳐서만 |
 | `db` | PostgreSQL DB. 처음 만들 때 `db/init.sql`을 실행한다 | `db/init.sql` | 아니오 |
 | `tunnel` | Cloudflare Quick Tunnel. `web`에 임시 인터넷 주소를 붙인다 | (설정만) | `--profile tunnel`을 줄 때만 뜬다 |
@@ -25,6 +25,7 @@ Python API, React 화면, PostgreSQL DB를 내 노트북에 **한꺼번에** 띄
 | 상태 보기 | `docker compose ps` |
 | 화면 열기 | 브라우저에서 <http://localhost:5173> |
 | 로그 보기 | `docker compose logs -f api` (멈출 때 `Ctrl + C`) |
+| 내 휴대폰에서 열기(내 Tailscale 기기만) | 저장소 맨 위 `docs/day2-checkpoints.md` 3절 "휴대폰에서 열기" |
 | 인터넷에 열기 | `docker compose --profile tunnel up -d tunnel` |
 | 인터넷 주소 찾기 | `docker compose logs tunnel` 에서 `https://….trycloudflare.com` |
 | 인터넷에서 닫기 | `docker compose stop tunnel` |
@@ -36,6 +37,7 @@ Python API, React 화면, PostgreSQL DB를 내 노트북에 **한꺼번에** 띄
 
 ## 주의
 
+- 화면은 이 노트북 안(`127.0.0.1`)에서만 열립니다. 같은 와이파이에 있는 다른 사람이 노트북의 와이파이 주소로 들어올 수 없습니다. 휴대폰에서 볼 때는 Tailscale serve(내 Tailscale 기기에만 HTTPS 주소로 열어 주는 기능)를 씁니다.
 - 터널 주소는 **인터넷의 누구나** 열 수 있고, 연 사람은 증빙을 추가할 수도 있습니다. 가상 자료만 넣고, 다 봤으면 바로 닫습니다.
 - 터널은 내 노트북과 Docker가 켜져 있는 동안만 열립니다. 노트북을 덮으면 주소도 죽습니다. 주소는 띄울 때마다 바뀝니다. 오래 열어 둘 서비스에는 쓰지 않습니다.
 - `compose.yaml`의 DB 비밀번호는 로컬 연습용 값입니다. DB는 노트북 바깥에 열지 않으므로 다른 기기에서 쓸 수 없습니다. 실제 서비스의 비밀번호는 파일에 적지 않습니다.

@@ -56,6 +56,16 @@
 
 > 장부를 처음 증빙 3건으로 되돌려 줘. 내가 넣은 증빙은 지워져도 괜찮아. 다 되면 화면에서 합계가 608,000원인지 확인해 줘.
 
+### 휴대폰에서 열기 (B2 실습 C-1 마지막)
+
+노트북과 휴대폰에 Tailscale을 설치하고 같은 계정으로 로그인해 둔 상태에서 붙여 넣는다.
+
+> 지금 띄운 증빙 장부를 내 휴대폰에서 열어 보려고 해. 내 Tailscale 기기에서만 열리게 장부 화면 주소를 만들고, 휴대폰 카메라로 찍을 수 있게 QR 코드로 화면에 띄워 줘. Tailscale이 꺼져 있으면 먼저 알려 줘. 다른 사람에게는 열리지 않는지도 함께 알려 줘.
+
+다 보면 공유를 끈다.
+
+> 휴대폰 공유를 꺼 줘.
+
 ### 빈 상태 만들기 (`TASK-5.3` 2번)
 
 > 빈 상태를 보려고 해. 장부의 증빙을 모두 지우고 화면을 다시 열어, 거래처별 합계 자리에 무엇이 보이는지 알려 줘.
@@ -106,3 +116,21 @@
 
 `stack/`에서 `docker compose exec db psql -U practice -d practice -c "DELETE FROM receipts"` 뒤 화면을 새로고침한다.
 
+### 휴대폰에서 열기
+
+Tailscale serve(내 Tailscale 기기에만 HTTPS 주소로 화면을 열어 주는 기능)로 연다. 장부는 `127.0.0.1:5173`에만 떠 있어 같은 와이파이의 다른 사람은 들어올 수 없다. 이 성질을 깨지 않는다.
+
+- **하지 않는 것:** `compose.yaml`의 포트를 모든 네트워크에 열기, `vite --host`, `tailscale funnel`(인터넷 전체 공개), Cloudflare 터널. 휴대폰 공유는 이 절차로만 한다.
+
+1. Tailscale 명령을 찾는다. 윈도는 `tailscale`. macOS는 `tailscale`이 없으면 `/Applications/Tailscale.app/Contents/MacOS/Tailscale`을 쓴다.
+2. `tailscale status`로 켜져 있는지 본다. 꺼져 있거나 로그인 전이면 멈추고 "노트북의 Tailscale 앱을 켜고 로그인해 주세요"라고 알린다. 목록에 휴대폰이 없으면 휴대폰 앱이 같은 계정으로 로그인됐는지 확인해 달라고 한다.
+3. 장부가 떠 있는지 본다: `curl -s -o /dev/null -w "%{http_code}" http://localhost:5173/api/receipts`가 `200`이어야 한다. 아니면 먼저 `stack/`에서 `docker compose up -d --build`로 띄운다.
+4. `tailscale serve status`로 이미 쓰는 공유를 본다. 443(주소에 포트가 없는 것)이 다른 곳을 가리키고 있으면 덮어쓰지 말고, 비어 있는 `8443`이나 `10000`을 골라 아래 명령에 `--https=<포트>`를 붙인다(주소 끝에 `:<포트>`가 붙는다). 셋 다 쓰이고 있으면 멈추고 사용자에게 묻는다.
+5. `tailscale serve --bg http://localhost:5173`. 처음 쓰는 계정이면 HTTPS나 Serve를 켜라는 링크가 나온다. 링크를 사용자에게 주고, 브라우저에서 승인했다고 할 때까지 기다린 뒤 다시 친다.
+6. `tailscale serve status`의 `https://<기기 이름>.<tailnet 이름>.ts.net` 주소(`tailnet only` 표시)를 쓴다. 그 주소의 `/api/receipts`가 `200`이고 증빙 3건이 오는지 본다.
+7. QR 코드를 그림으로 만들어 사용자 화면에 연다. 에이전트가 친 명령의 출력은 사용자 화면에서 접혀 안 보일 수 있으므로 그림을 기본으로 한다. 저장소 밖 임시 폴더에 만든다: `npx --yes qrcode@1.5.4 -o <임시 폴더>/ledger-qr.png "<주소>"` 뒤 그림을 연다(macOS `open`, 윈도 `start`). 터미널에도 찍어 준다: `npx --yes qrcode@1.5.4 --small "<주소>"`. Node.js는 사전 과제에서 설치했고, 저장소 의존성에는 넣지 않는다.
+8. 사용자에게 알린다: 주소, 휴대폰의 Tailscale 앱을 켜고 카메라로 찍으라는 것, 거래처별 합계 표 숫자가 노트북과 같은지 보라는 것. "다른 사람에게 열리는지"는 이렇게 답한다: 이 주소는 같은 Tailscale 계정의 기기에서만 열린다(`tailnet only`). 장부는 노트북 안(`127.0.0.1`)에만 떠 있어 같은 와이파이에서도 열리지 않는다. 인터넷 공개(Funnel)는 켜지 않았다.
+
+### 휴대폰 공유 끄기
+
+`tailscale serve --https=443 off`(4번에서 다른 포트를 골랐으면 `--https=<그 포트> off`). `tailscale serve status`에 이 장부 주소가 없어졌는지 본다. `tailscale serve reset`은 이 장부 말고 다른 공유까지 모두 지우므로 사용자가 원할 때만 쓴다.
