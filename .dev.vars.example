@@ -1,0 +1,8 @@
+# Cloudflare Workers를 내 노트북에서 돌릴 때(npx wrangler dev) 읽는 비밀값의 견본.
+# 쓰는 법: cp .dev.vars.example .dev.vars 로 복사하고, 실제 값은 .dev.vars에만 적는다.
+# .dev.vars는 Git에 올라가지 않는다(.gitignore). 이 견본에는 이름과 가짜 값만 둔다.
+# 배포한 Worker의 비밀은 이 파일이 아니라 npx wrangler secret put <이름> 으로 넣는다.
+# wrangler.toml의 [vars]는 저장소에 그대로 보이므로 비밀을 두지 않는다.
+#
+# 지금 실습 도구는 비밀값이 필요 없다. 외부 API를 붙이면 아래 형식으로 이름을 적는다.
+# EXAMPLE_API_KEY=fake-0000-not-a-real-key
