@@ -42,6 +42,19 @@ def list_receipts():
     return {"items": items, "total_supply": sum(i["supply"] for i in items), "total_vat": sum(i["vat"] for i in items)}
 
 
+@app.get("/api/receipts/by-vendor")
+def receipts_by_vendor():
+    """거래처마다 공급가액 합계와 부가세 합계. 부가세 합계는 건별 부가세(원 미만 버림)를 더한 값이라 장부 목록과 맞는다."""
+    with psycopg.connect(DATABASE_URL) as conn:
+        rows = conn.execute("SELECT vendor, supply FROM receipts").fetchall()
+    totals: dict[str, dict] = {}
+    for vendor, supply in rows:
+        t = totals.setdefault(vendor, {"vendor": vendor, "supply": 0, "vat": 0})
+        t["supply"] += supply
+        t["vat"] += vat(supply)
+    return {"items": [totals[v] for v in sorted(totals)]}
+
+
 @app.post("/api/receipts", status_code=201)
 def add_receipt(body: NewReceipt):
     vendor = body.vendor.strip()

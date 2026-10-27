@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { vendorTotals } from "./vendorTotals.js";
 
 const won = (n) => n.toLocaleString("ko-KR") + "원";
 const today = () => new Date().toISOString().slice(0, 10);
@@ -20,6 +19,7 @@ const Empty = () => <p className="px-3 py-6 text-center text-sm text-muted-foreg
 
 export default function App() {
   const [data, setData] = useState(null);
+  const [vendors, setVendors] = useState(null);
   const [error, setError] = useState("");
   const [form, setForm] = useState({ issued_on: today(), vendor: "", supply: "" });
 
@@ -33,7 +33,16 @@ export default function App() {
       setError("목록을 가져오지 못했습니다: " + e.message);
     }
   };
-  useEffect(() => { load(); }, []);
+  const loadVendors = async () => {
+    try {
+      const res = await fetch("/api/receipts/by-vendor");
+      if (!res.ok) throw new Error(`서버 응답 ${res.status}`);
+      setVendors((await res.json()).items);
+    } catch (e) {
+      setError("거래처별 합계를 가져오지 못했습니다: " + e.message);
+    }
+  };
+  useEffect(() => { load(); loadVendors(); }, []);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -45,6 +54,7 @@ export default function App() {
     if (!res.ok) return setError("저장하지 못했습니다. 날짜·거래처·공급가액을 확인하세요.");
     setForm({ ...form, vendor: "", supply: "" });
     load();
+    loadVendors();
   };
 
   return (
@@ -78,11 +88,11 @@ export default function App() {
           </Section>
 
           <Section title="거래처별 합계">
-            {data.items.length === 0 ? <Empty /> : (
+            {!vendors ? null : vendors.length === 0 ? <Empty /> : (
               <Table>
                 <TableHeader><TableRow><TableHead>거래처</TableHead><TableHead className={num}>공급가액 합계</TableHead><TableHead className={num}>부가세 합계</TableHead></TableRow></TableHeader>
                 <TableBody>
-                  {vendorTotals(data.items).map((t) => (
+                  {vendors.map((t) => (
                     <TableRow key={t.vendor}><TableCell>{t.vendor}</TableCell><TableCell className={num}>{won(t.supply)}</TableCell><TableCell className={num}>{won(t.vat)}</TableCell></TableRow>
                   ))}
                 </TableBody>
