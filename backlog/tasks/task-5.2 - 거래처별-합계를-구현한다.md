@@ -1,7 +1,7 @@
 ---
 id: TASK-5.2
 title: 거래처별 합계 계산을 서버로 옮긴다
-status: 할 일
+status: 완료
 assignee: []
 created_date: '2026-10-26 14:09'
 updated_date: '2026-10-26 23:57'
