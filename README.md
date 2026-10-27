@@ -139,4 +139,5 @@ npm run deploy       # Cloudflare에 올린다
 
 - 실제 고객명, 사업자번호, 주민등록번호, 계좌는 넣지 않습니다. 가상 자료만 씁니다.
 - 토큰과 비밀번호는 `.env` 또는 `.dev.vars` 파일에만 둡니다. 이 두 파일은 저장소에 올라가지 않게 막아 두었습니다.
+- 어떤 이름의 값이 필요한지는 견본 파일 `.dev.vars.example`(Cloudflare 로컬 실행)과 `stack/.env.example`(Docker 스택)에 이름과 가짜 값으로 적어 두었습니다. 복사해서 `.dev.vars`·`stack/.env`를 만들고 실제 값은 거기에만 적습니다.
 - agent의 "다 됐습니다"를 그대로 믿지 않습니다. 테스트 결과와 바뀐 내용(`git diff`)을 직접 봅니다.
