@@ -56,6 +56,9 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 - `stack/web`의 새 화면은 `src/components/ui`의 shadcn/ui 부품과 Tailwind 테마 색(`src/style.css`의 `--color-*`)만 쓴다. 색 값을 직접 적거나 같은 역할의 부품을 새로 만들지 않는다.
 - 필요한 부품이 없으면 `stack/web`에서 `npx shadcn@4.22.1 add <부품 이름>`으로 가져온다. 가져온 부품은 `cn`을 `@/lib/utils`에서 불러와야 한다(npm의 `cn` 패키지를 깔지 않는다).
 - 금액 칸은 오른쪽 정렬(`text-right tabular-nums`), 자료가 없으면 "표시할 거래가 없습니다"를 보인다.
+- 글꼴은 Pretendard GOV만 쓴다. 다른 글꼴이나 system-ui를 새로 적지 않는다.
+- 이모지를 화면·버튼·메시지에 쓰지 않는다. 상태는 글자로 쓴다.
+- 아이콘은 lucide-react의 SVG만 쓰고, 아이콘만 있는 버튼에는 aria-label을 붙인다.
 
 ## 자료와 비밀값
 
