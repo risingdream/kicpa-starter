@@ -81,6 +81,7 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 | 작업 목록 보기 | `npx backlog task list --plain` |
 | 배포 (승인 뒤) | `npm run deploy` |
 | Docker 스택 띄우기 (2일차·실습 E) | `stack/`에서 `docker compose up -d --build` → <http://localhost:5173> |
+| 장부를 내 휴대폰에서 열기 | `docs/day2-checkpoints.md` 3절 "휴대폰에서 열기"(Tailscale serve) |
 
 ## 구조
 
@@ -89,7 +90,7 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 - `src/vat.js` — 계산 예시. 계산은 화면이 아니라 `src/`에 두고 테스트한다.
 - `docs/` — 첫 개발 한 장, 와이어프레임, QA·배포 점검표 서식. 2일차 체크포인트 브랜치(`day2-b1-done`, `day2-done`, `day2-qa-bug`)와 자료 되돌리는 법은 `docs/day2-checkpoints.md`. 사용자가 "완성본으로 바꿔 타 줘", "증빙 3건으로 되돌려 줘"처럼 업무 말로 시키면 그 문서의 '에이전트가 따를 절차'대로 한다.
 - `backlog/` — 이슈(스토리·작업)와 설정(`config.yml`). Backlog.md가 관리한다.
-- `stack/` — 2일차 거래처별 합계(`TASK-5`)와 3일차 실습 E의 Docker 스택(매입 증빙 장부). Python API(`api/`), React 화면(`web/`), PostgreSQL(`db/`)을 `compose.yaml` 하나로 띄운다. 설명은 `stack/README.md`. 이미지 버전은 바꾸지 않는다. DB 구조를 바꾸면 이미 있는 DB에는 `init.sql`이 다시 돌지 않는다는 점을 사용자에게 알린다. 터널(`--profile tunnel`)은 사용자가 시킬 때만 띄운다.
+- `stack/` — 2일차 거래처별 합계(`TASK-5`)와 3일차 실습 E의 Docker 스택(매입 증빙 장부). Python API(`api/`), React 화면(`web/`), PostgreSQL(`db/`)을 `compose.yaml` 하나로 띄운다. 설명은 `stack/README.md`. 이미지 버전은 바꾸지 않는다. DB 구조를 바꾸면 이미 있는 DB에는 `init.sql`이 다시 돌지 않는다는 점을 사용자에게 알린다. 터널(`--profile tunnel`)은 사용자가 시킬 때만 띄운다. 화면은 `127.0.0.1`에만 열려 있다. 사용자가 "휴대폰에서 열어 줘"처럼 시키면 `docs/day2-checkpoints.md` 3절 "휴대폰에서 열기"의 Tailscale serve 절차대로 한다. 포트를 모든 네트워크에 열거나 `tailscale funnel`을 쓰지 않는다.
 
 <!-- BACKLOG.MD GUIDELINES START -->
 <!-- backlog.md-instructions-version: 1.54.0 -->
