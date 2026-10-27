@@ -54,7 +54,6 @@ export default function App() {
     if (!res.ok) return setError("저장하지 못했습니다. 날짜·거래처·공급가액을 확인하세요.");
     setForm({ ...form, vendor: "", supply: "" });
     load();
-    loadVendors();
   };
 
   return (
