@@ -1,7 +1,7 @@
 ---
 id: TASK-5.1
 title: 거래처별 합계 표를 와이어프레임부터 화면까지 만든다
-status: 할 일
+status: 완료
 assignee: []
 created_date: '2026-10-26 14:09'
 updated_date: '2026-10-26 23:57'
