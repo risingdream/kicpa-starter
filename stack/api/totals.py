@@ -1,5 +1,7 @@
 """금액 업무 규칙. DB·웹 서버 없이 도는 함수만 둔다(test_totals.py가 입력을 직접 넣어 확인한다)."""
 
+from datetime import date
+
 
 def vat(supply: int) -> int:
     """부가세는 공급가액의 10%, 원 미만은 0 쪽으로 버린다(-38,005원 → -3,800원)."""
@@ -21,3 +23,11 @@ def vendor_totals(rows) -> dict:
             acc["supply"] += supply
             acc["vat"] += vat(supply)
     return {"items": [by_vendor[v] for v in sorted(by_vendor)], "total": total}
+
+
+def month_range(month: str) -> tuple[date, date]:
+    """'YYYY-MM'을 그 달 1일과 다음 달 1일로 바꾼다. 증빙은 시작일 이상 ~ 끝일 미만이다(12월이면 다음 해 1월 1일 미만)."""
+    year, mon = int(month[:4]), int(month[5:7])
+    start = date(year, mon, 1)
+    end = date(year + 1, 1, 1) if mon == 12 else date(year, mon + 1, 1)
+    return start, end

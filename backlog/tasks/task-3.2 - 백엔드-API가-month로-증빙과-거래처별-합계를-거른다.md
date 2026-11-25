@@ -1,10 +1,10 @@
 ---
 id: TASK-3.2
 title: '[백엔드] API가 month로 증빙과 거래처별 합계를 거른다'
-status: 할 일
+status: 완료
 assignee: []
 created_date: '2026-10-26 10:51'
-updated_date: '2026-11-25 10:31'
+updated_date: '2026-11-25 10:33'
 labels:
   - 백엔드
 dependencies:

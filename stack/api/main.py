@@ -4,13 +4,23 @@ import os
 from datetime import date
 
 import psycopg
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from totals import vat, vendor_totals
+from totals import month_range, vat, vendor_totals
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 app = FastAPI(title="매입 증빙 API")
+
+# 월 조건(docs/wireframes/month.md). 형식이 틀리면(예: 2026-13) FastAPI가 422를 돌려준다.
+MONTH = Query(None, pattern=r"^\d{4}-(0[1-9]|1[0-2])$", description="YYYY-MM. 없으면 전체")
+
+
+def month_where(month: str | None) -> tuple[str, tuple]:
+    """month가 있으면 그 달 1일 이상 ~ 다음 달 1일 미만으로 거르는 SQL 조건을 만든다."""
+    if not month:
+        return "", ()
+    return " WHERE issued_on >= %s AND issued_on < %s", month_range(month)
 
 
 class NewReceipt(BaseModel):
@@ -32,18 +42,20 @@ def health():
 
 
 @app.get("/api/receipts")
-def list_receipts():
+def list_receipts(month: str | None = MONTH):
+    where, params = month_where(month)
     with psycopg.connect(DATABASE_URL) as conn:
-        rows = conn.execute("SELECT id, issued_on, vendor, supply FROM receipts ORDER BY issued_on, id").fetchall()
+        rows = conn.execute("SELECT id, issued_on, vendor, supply FROM receipts" + where + " ORDER BY issued_on, id", params).fetchall()
     items = [row(r) for r in rows]
     return {"items": items, "total_supply": sum(i["supply"] for i in items), "total_vat": sum(i["vat"] for i in items)}
 
 
 @app.get("/api/receipts/by-vendor")
-def receipts_by_vendor():
-    """거래처마다 건수·공급가액 합계·부가세 합계와 전체 합계. 계산 규칙은 totals.py에 있다."""
+def receipts_by_vendor(month: str | None = MONTH):
+    """거래처마다 건수·공급가액 합계·부가세 합계와 전체 합계. month를 주면 그 달 증빙만 더한다. 계산 규칙은 totals.py에 있다."""
+    where, params = month_where(month)
     with psycopg.connect(DATABASE_URL) as conn:
-        rows = conn.execute("SELECT vendor, supply FROM receipts").fetchall()
+        rows = conn.execute("SELECT vendor, supply FROM receipts" + where, params).fetchall()
     return vendor_totals(rows)
 
 
