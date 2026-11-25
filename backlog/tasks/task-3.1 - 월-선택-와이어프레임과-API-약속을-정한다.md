@@ -1,10 +1,10 @@
 ---
 id: TASK-3.1
 title: 월 선택 와이어프레임과 API 약속을 정한다
-status: 할 일
+status: 완료
 assignee: []
 created_date: '2026-10-26 10:51'
-updated_date: '2026-11-25 10:31'
+updated_date: '2026-11-25 10:32'
 labels:
   - 와이어프레임
 dependencies: []
