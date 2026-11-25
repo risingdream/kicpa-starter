@@ -7,6 +7,8 @@ import psycopg
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from totals import vat, vendor_totals
+
 DATABASE_URL = os.environ["DATABASE_URL"]
 app = FastAPI(title="매입 증빙 API")
 
@@ -16,11 +18,6 @@ class NewReceipt(BaseModel):
     vendor: str = Field(min_length=1, max_length=50)
     # 반품·에누리(수정세금계산서)는 공급가액이 마이너스다. 0원은 의미 없는 증빙이라 아래에서 막는다.
     supply: int = Field(ge=-10_000_000_000, le=10_000_000_000)
-
-
-def vat(supply: int) -> int:
-    """부가세는 공급가액의 10%, 원 미만은 0 쪽으로 버린다(-38,005원 → -3,800원)."""
-    return supply // 10 if supply >= 0 else -(-supply // 10)
 
 
 def row(r) -> dict:
@@ -40,6 +37,14 @@ def list_receipts():
         rows = conn.execute("SELECT id, issued_on, vendor, supply FROM receipts ORDER BY issued_on, id").fetchall()
     items = [row(r) for r in rows]
     return {"items": items, "total_supply": sum(i["supply"] for i in items), "total_vat": sum(i["vat"] for i in items)}
+
+
+@app.get("/api/receipts/by-vendor")
+def receipts_by_vendor():
+    """거래처마다 건수·공급가액 합계·부가세 합계와 전체 합계. 계산 규칙은 totals.py에 있다."""
+    with psycopg.connect(DATABASE_URL) as conn:
+        rows = conn.execute("SELECT vendor, supply FROM receipts").fetchall()
+    return vendor_totals(rows)
 
 
 @app.post("/api/receipts", status_code=201)

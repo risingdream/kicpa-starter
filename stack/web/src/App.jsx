@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { vendorTotals } from "./vendorTotals.js";
 
 const won = (n) => n.toLocaleString("ko-KR") + "원";
 const count = (n) => n.toLocaleString("ko-KR") + "건";
@@ -21,6 +20,7 @@ const Empty = () => <p className="px-3 py-6 text-center text-sm text-muted-foreg
 
 export default function App() {
   const [data, setData] = useState(null);
+  const [vendors, setVendors] = useState(null);
   const [error, setError] = useState("");
   const [form, setForm] = useState({ issued_on: today(), vendor: "", supply: "" });
 
@@ -34,7 +34,16 @@ export default function App() {
       setError("목록을 가져오지 못했습니다: " + e.message);
     }
   };
-  useEffect(() => { load(); }, []);
+  const loadVendors = async () => {
+    try {
+      const res = await fetch("/api/receipts/by-vendor");
+      if (!res.ok) throw new Error(`서버 응답 ${res.status}`);
+      setVendors(await res.json());
+    } catch (e) {
+      setError("거래처별 합계를 가져오지 못했습니다: " + e.message);
+    }
+  };
+  useEffect(() => { load(); loadVendors(); }, []);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -46,10 +55,8 @@ export default function App() {
     if (!res.ok) return setError("저장하지 못했습니다. 날짜·거래처·공급가액을 확인하세요.");
     setForm({ ...form, vendor: "", supply: "" });
     load();
+    loadVendors();
   };
-
-  // 거래처별 합계는 화면이 증빙 목록으로 직접 더한다.
-  const vendors = data && vendorTotals(data.items);
 
   return (
     <main>
@@ -82,7 +89,7 @@ export default function App() {
           </Section>
 
           <Section title="거래처별 합계">
-            {vendors.items.length === 0 ? <Empty /> : (
+            {!vendors ? null : vendors.items.length === 0 ? <Empty /> : (
               <Table>
                 <TableHeader><TableRow><TableHead>거래처</TableHead><TableHead className={num}>건수</TableHead><TableHead className={num}>공급가액 합계</TableHead><TableHead className={num}>부가세 합계</TableHead></TableRow></TableHeader>
                 <TableBody>

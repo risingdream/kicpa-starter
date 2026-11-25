@@ -44,6 +44,7 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 - 작게 바꾸고 바로 확인한다. 바꾼 뒤에는 `npm test`를 돌리고 결과를 그대로 보고한다.
 - 테스트가 실패하면 테스트나 기대값을 고쳐서 통과시키지 않는다. 기대값이 틀렸다고 보이면 사용자에게 먼저 묻는다.
 - 새 기능에는 정상·경계·예외 사례 테스트를 함께 만든다. 테스트는 `test/`에 두고 Node 내장 `node:test`를 쓴다.
+- 서버(`stack/api`)의 금액 규칙은 DB 없이 도는 함수(`stack/api/totals.py`)에 두고, 테스트는 `stack/api/test_*.py`에 Python 내장 `unittest`로 만든다. `stack/`에서 `docker compose exec api python -m unittest -v`로 돌린다(스택이 떠 있어야 한다). 서버 계산을 바꿨으면 `npm test`와 이 테스트를 둘 다 돌려 결과를 보고한다.
 - 띄워 둔 스택(`stack/`)에 요청을 보내는 테스트는 다른 테스트 파일과 동시에 돌고, 같은 DB에서 여러 번 돈다. 그래서 예시 자료 개수, 전체 합계, 요청 전후의 개수 차이처럼 다른 테스트나 지난 실행이 바꿀 수 있는 값을 기대하지 않는다.
 - 스택 테스트는 다른 테스트가 쓰지 않는 달(예: 2027-03)을 쓰고, 넣는 가상 증빙의 거래처 이름에 실행마다 달라지는 표시를 붙인다(예: `가상 공구상 ${Date.now()}`). 확인은 방금 넣은 그 줄로만 한다.
 - 스택 테스트가 넣은 증빙은 테스트가 끝날 때 `DELETE /api/receipts/{id}`로 지운다(`after()`). 남기면 사용자가 보는 장부 화면에 테스트 줄이 섞인다.
@@ -80,6 +81,7 @@ Orca 같은 도구로 이슈마다 워크트리(worktree, 같은 프로젝트를
 |---|---|
 | 처음 준비 | `npm install` |
 | 테스트 | `npm test` |
+| 서버 업무 규칙 테스트 | `stack/`에서 `docker compose exec api python -m unittest -v` |
 | 내 노트북에서 화면 띄우기 | `npm run dev` → <http://localhost:8787> |
 | 작업 보드(웹) 띄우기 | `npm run board` → <http://localhost:6420> |
 | 작업 목록 보기 | `npx backlog task list --plain` |
