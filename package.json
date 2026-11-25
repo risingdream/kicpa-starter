@@ -7,14 +7,12 @@
   "scripts": {
     "dev": "wrangler dev",
     "test": "node --test",
-    "deploy": "wrangler deploy",
-    "board": "backlog browser"
+    "deploy": "wrangler deploy"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
-    "backlog.md": "1.54.0",
     "wrangler": "^4.151.2"
   }
 }
