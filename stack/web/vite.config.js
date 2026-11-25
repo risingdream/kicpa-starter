@@ -1,8 +1,12 @@
+import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
+  // shadcn/ui 부품이 "@/components/..."처럼 src/ 기준 주소로 서로를 부른다.
+  resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
   server: {
     // 화면이 /api/... 를 부르면 같은 compose 안의 api 컨테이너로 넘긴다.
     proxy: { "/api": "http://api:8000" },

@@ -1,10 +1,10 @@
 ---
 id: TASK-5.2
 title: 거래처별 합계 표를 화면에 만든다
-status: 할 일
+status: 완료
 assignee: []
 created_date: '2026-10-26 14:09'
-updated_date: '2026-11-25 10:10'
+updated_date: '2026-11-25 10:20'
 labels:
   - 프론트
 dependencies:
