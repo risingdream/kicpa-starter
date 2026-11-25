@@ -1,6 +1,6 @@
 # 한공회 과정 실습용 기본 저장소
 
-한국공인회계사회 3일 과정에서 쓰는 **실습 출발점**입니다. 개발 경험이 없어도 이 안내대로 따라 하면 됩니다.
+한국공인회계사회 2일 과정에서 쓰는 **실습 출발점**입니다. 개발 경험이 없어도 이 안내대로 따라 하면 됩니다.
 
 들어 있는 것은 세 가지뿐입니다.
 
@@ -21,7 +21,7 @@
 | Node.js (LTS 버전) | 터미널에서 `node -v` → `v20` 이상 | [nodejs.org](https://nodejs.org)에서 LTS 설치 |
 | GitHub CLI(`gh`) | 터미널에서 `gh --version` | [cli.github.com](https://cli.github.com)에서 설치 |
 | coding agent 1개 (Claude Code·Codex·OpenCode) | 터미널에서 `claude`·`codex`·`opencode` | 과정 사전 과제 안내를 따른다 |
-| Docker Desktop | 터미널에서 `docker compose version` | [docker.com](https://www.docker.com/products/docker-desktop/)에서 설치. 2일차와 3일차 실습 E에서 쓴다 |
+| Docker Desktop | 터미널에서 `docker compose version` | [docker.com](https://www.docker.com/products/docker-desktop/)에서 설치. 1일차와 2일차에 쓴다 |
 
 터미널은 명령을 글자로 치는 창입니다. macOS는 "터미널", 윈도는 "PowerShell"을 엽니다. 설치한 뒤에는 터미널을 새로 열어야 명령이 잡힙니다.
 
@@ -90,7 +90,7 @@ npx backlog task list --plain   # 작업 목록을 터미널에 보여 준다
 npm run board                   # 작업 보드를 브라우저로 연다 (멈출 때 Ctrl + C)
 ```
 
-작업 보드는 `할 일 / 진행 중 / 완료` 세 칸으로 된 화면(<http://localhost:6420>)입니다. 메뉴는 영어지만 이슈와 칸 이름은 한국어입니다. 예시로 스토리 다섯이 들어 있습니다. `TASK-1`(부가세 계산기)은 이슈가 어떻게 생겼는지 보는 용도이고, `TASK-5`(매입 증빙 장부의 거래처별 합계)는 1일차 하루 실습입니다(와이어프레임 → 화면 → 계산을 서버로 옮기기 → QA, 이슈 넷). `TASK-2`~`TASK-4`(공제 표시·월 선택·CSV 내려받기)는 여러 agent를 나란히 돌리는 강사 시연과 과정 뒤 과제용입니다. 시연 순서는 [`docs/orca-demo.md`](docs/orca-demo.md)에 있습니다.
+작업 보드는 `할 일 / 진행 중 / 완료` 세 칸으로 된 화면(<http://localhost:6420>)입니다. 메뉴는 영어지만 이슈와 칸 이름은 한국어입니다. 예시로 스토리 다섯이 들어 있습니다. `TASK-1`(부가세 계산기)은 이슈가 어떻게 생겼는지 보는 용도이고, `TASK-5`(매입 증빙 장부의 거래처별 합계)는 1일차 하루 실습입니다(와이어프레임 → 화면 → 계산을 서버로 옮기기 → QA, 이슈 넷). `TASK-3`(월 선택)은 2일차에 화면·서버를 두 워커에게 나눠 맡기는 실습입니다. `TASK-2`(공제 표시)·`TASK-4`(CSV 내려받기)는 이슈 사이 의존성을 보는 예시이자 과정 뒤 추가 연습용입니다. 시연 순서는 [`docs/orca-demo.md`](docs/orca-demo.md)에 있습니다.
 
 이슈에는 두 가지 확인 목록이 붙습니다.
 
