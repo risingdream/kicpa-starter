@@ -4,8 +4,9 @@
 """
 
 import unittest
+from datetime import date
 
-from totals import vat, vendor_totals
+from totals import month_range, vat, vendor_totals
 
 FIRST_3 = [("가상 문구점", 120000), ("가상 인쇄소", 450000), ("가상 문구점", 38000)]
 
@@ -49,6 +50,22 @@ class VendorTotalsTest(unittest.TestCase):
     def test_vendor_names_compared_as_written(self):
         """예외: 띄어쓰기가 다른 거래처 이름은 다른 줄이다"""
         self.assertEqual(len(vendor_totals([("가상 문구점", 1000), ("가상문구점", 2000)])["items"]), 2)
+
+
+class MonthRangeTest(unittest.TestCase):
+    def test_october(self):
+        """정상: 2026-10은 10월 1일 이상 11월 1일 미만"""
+        self.assertEqual(month_range("2026-10"), (date(2026, 10, 1), date(2026, 11, 1)))
+
+    def test_december_rolls_over_to_next_year(self):
+        """경계: 2026-12는 2027-01-01 미만까지"""
+        self.assertEqual(month_range("2026-12"), (date(2026, 12, 1), date(2027, 1, 1)))
+
+    def test_last_day_is_inside_first_day_of_next_month_is_not(self):
+        """경계: 10월 31일은 10월에 들고, 11월 1일은 들지 않는다"""
+        start, end = month_range("2026-10")
+        self.assertTrue(start <= date(2026, 10, 31) < end)
+        self.assertFalse(start <= date(2026, 11, 1) < end)
 
 
 if __name__ == "__main__":
