@@ -1,8 +1,8 @@
-# Docker 실습 스택 (2일차 TASK-5, 3일차 실습 E)
+# Docker 실습 스택 (1일차 TASK-5, 2일차 TASK-3)
 
-Python API, React 화면, PostgreSQL DB를 내 노트북에 **한꺼번에** 띄우는 실습용 예시입니다. 2일차에는 띄워서 agent에게 기능 하나(거래처별 합계, `TASK-5`)를 맡겨 화면부터 만들고 계산을 서버로 옮겨 보고, 3일차 실습 E에서는 Cloudflare 터널로 인터넷 주소를 붙여 휴대폰에서 엽니다. 예시 업무는 매입 증빙 목록(날짜·거래처·공급가액 → 부가세 10%)입니다. 반품·에누리(수정세금계산서)처럼 공급가액이 마이너스인 증빙도 넣을 수 있고(0원은 넣지 않음), 부가세는 원 미만을 0 쪽으로 버립니다(-38,005원 → -3,800원). 모두 가상 자료입니다.
+Python API, React 화면, PostgreSQL DB를 내 노트북에 **한꺼번에** 띄우는 실습용 예시입니다. 1일차에는 띄워서 agent에게 기능 하나(거래처별 합계, `TASK-5`)를 맡겨 와이어프레임·화면부터 만들고 계산을 서버로 옮겨 QA하고, 2일차에는 월별 조회(`TASK-3`)를 더합니다. 실습 E에서는 Cloudflare 터널로 인터넷 주소를 붙여 휴대폰에서 엽니다. 예시 업무는 매입 증빙 목록(날짜·거래처·공급가액 → 부가세 10%)입니다. 반품·에누리(수정세금계산서)처럼 공급가액이 마이너스인 증빙도 넣을 수 있고(0원은 넣지 않음), 부가세는 원 미만을 0 쪽으로 버립니다(-38,005원 → -3,800원). 모두 가상 자료입니다.
 
-저장소 바깥쪽(`public/`, `src/`)의 부가세 계산기와는 별개입니다. 그쪽은 Cloudflare Workers로 배포하고(실습 D), 이쪽은 내 노트북에서 띄워 고쳐 보고(2일차) 터널로 엽니다(실습 E). 2일차 완성본·QA 연습용 브랜치와 자료를 증빙 3건으로 되돌리는 법은 [`../docs/day2-checkpoints.md`](../docs/day2-checkpoints.md)에 있습니다.
+저장소 바깥쪽(`public/`, `src/`)의 부가세 계산기와는 별개입니다. 그쪽은 Cloudflare Workers로 배포하고(실습 D), 이쪽은 내 노트북에서 띄워 고쳐 보고(2일차) 터널로 엽니다(실습 E). 이슈별 완성본·QA 연습용 브랜치와 자료를 처음 상태로 되돌리는 법은 [`../docs/checkpoints.md`](../docs/checkpoints.md)에 있습니다.
 
 ## 세 컨테이너
 
@@ -25,7 +25,7 @@ Python API, React 화면, PostgreSQL DB를 내 노트북에 **한꺼번에** 띄
 | 상태 보기 | `docker compose ps` |
 | 화면 열기 | 브라우저에서 <http://localhost:5173> |
 | 로그 보기 | `docker compose logs -f api` (멈출 때 `Ctrl + C`) |
-| 내 휴대폰에서 열기(내 Tailscale 기기만) | 저장소 맨 위 `docs/day2-checkpoints.md` 3절 "휴대폰에서 열기" |
+| 내 휴대폰에서 열기(내 Tailscale 기기만) | 저장소 맨 위 `docs/checkpoints.md` 3절 "휴대폰에서 열기" |
 | 인터넷에 열기 | `docker compose --profile tunnel up -d tunnel` |
 | 인터넷 주소 찾기 | `docker compose logs tunnel` 에서 `https://….trycloudflare.com` |
 | 인터넷에서 닫기 | `docker compose stop tunnel` |
