@@ -5,6 +5,7 @@ const won = (n) => n.toLocaleString("ko-KR") + "원";
 const count = (n) => n.toLocaleString("ko-KR") + "건";
 const today = () => new Date().toISOString().slice(0, 10);
 const EMPTY = "표시할 거래가 없습니다";
+const EMPTY_MONTH = "이 달 증빙이 없습니다";
 const num = "text-right tabular-nums";
 
 function Section({ title, children }) {
@@ -16,17 +17,19 @@ function Section({ title, children }) {
   );
 }
 
-const Empty = () => <p className="px-3 py-6 text-center text-sm text-muted-foreground">{EMPTY}</p>;
+const Empty = ({ text }) => <p className="px-3 py-6 text-center text-sm text-muted-foreground">{text}</p>;
 
 export default function App() {
   const [data, setData] = useState(null);
   const [vendors, setVendors] = useState(null);
   const [error, setError] = useState("");
   const [form, setForm] = useState({ issued_on: today(), vendor: "", supply: "" });
+  const [month, setMonth] = useState(""); // 빈 값이면 전체(docs/wireframes/month.md)
+  const query = month ? `?month=${month}` : "";
 
   const load = async () => {
     try {
-      const res = await fetch("/api/receipts");
+      const res = await fetch("/api/receipts" + query);
       if (!res.ok) throw new Error(`서버 응답 ${res.status}`);
       setData(await res.json());
       setError("");
@@ -36,14 +39,14 @@ export default function App() {
   };
   const loadVendors = async () => {
     try {
-      const res = await fetch("/api/receipts/by-vendor");
+      const res = await fetch("/api/receipts/by-vendor" + query);
       if (!res.ok) throw new Error(`서버 응답 ${res.status}`);
       setVendors(await res.json());
     } catch (e) {
       setError("거래처별 합계를 가져오지 못했습니다: " + e.message);
     }
   };
-  useEffect(() => { load(); loadVendors(); }, []);
+  useEffect(() => { load(); loadVendors(); }, [month]);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -70,12 +73,17 @@ export default function App() {
         <button type="submit">추가</button>
       </form>
 
+      <div className="mt-6 flex items-end gap-2">
+        <label>월<input type="month" value={month} onChange={(e) => setMonth(e.target.value)} /></label>
+        <button type="button" onClick={() => setMonth("")}>전체 보기</button>
+      </div>
+
       {error && <p className="error">{error}</p>}
       {!data && !error && <p className="text-sm text-muted-foreground">불러오는 중입니다…</p>}
       {data && (
         <>
           <Section title="증빙 목록">
-            {data.items.length === 0 ? <Empty /> : (
+            {data.items.length === 0 ? <Empty text={month ? EMPTY_MONTH : EMPTY} /> : (
               <Table>
                 <TableHeader><TableRow><TableHead>날짜</TableHead><TableHead>거래처</TableHead><TableHead className={num}>공급가액</TableHead><TableHead className={num}>부가세</TableHead></TableRow></TableHeader>
                 <TableBody>
@@ -89,7 +97,7 @@ export default function App() {
           </Section>
 
           <Section title="거래처별 합계">
-            {!vendors ? null : vendors.items.length === 0 ? <Empty /> : (
+            {!vendors ? null : vendors.items.length === 0 ? <Empty text={month ? EMPTY_MONTH : EMPTY} /> : (
               <Table>
                 <TableHeader><TableRow><TableHead>거래처</TableHead><TableHead className={num}>건수</TableHead><TableHead className={num}>공급가액 합계</TableHead><TableHead className={num}>부가세 합계</TableHead></TableRow></TableHeader>
                 <TableBody>

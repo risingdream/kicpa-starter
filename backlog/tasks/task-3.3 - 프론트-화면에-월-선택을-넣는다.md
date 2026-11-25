@@ -1,10 +1,10 @@
 ---
 id: TASK-3.3
 title: '[프론트] 화면에 월 선택을 넣는다'
-status: 할 일
+status: 완료
 assignee: []
 created_date: '2026-10-26 10:51'
-updated_date: '2026-11-25 10:32'
+updated_date: '2026-11-25 10:34'
 labels:
   - 프론트
 dependencies:
